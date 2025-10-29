@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Tone Spectrum Analysis Tool</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 80px 30px 50px 30px;
+            border-radius: 0px;
+            margin-bottom: 30px;
+            border: 3px solid #1a1a1a;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            border-bottom: 1px solid #d0d0d0;
+            background:
+                linear-gradient(#1a1a1a, #1a1a1a) 70px 15px / calc(100% - 90px) 3px,
+                linear-gradient(#1a1a1a, #1a1a1a) 70px 25px / calc(100% - 90px) 3px,
+                linear-gradient(#1a1a1a, #1a1a1a) 70px 35px / calc(100% - 90px) 3px,
+                linear-gradient(#1a1a1a, #1a1a1a) 70px 45px / calc(100% - 90px) 3px;
+            background-repeat: no-repeat;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background: #1a1a1a;
+        }
+
+        .header h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 52px;
+            font-weight: 400;
+            margin: 0 0 20px 0;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: 20px;
+            margin: 0;
+            color: #4a4a4a;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #2a2a2a;
+            margin: 0 0 16px 0;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        .musical-note {
+            font-size: 64px;
+            margin: 40px 0 0 0;
+            color: #1a1a1a;
+        }
+
+        .spectrum-container {
+            background: #fafafa;
+            border-radius: 0px;
+            padding: 40px;
+            margin-bottom: 20px;
+            border: 2px solid #d0d0d0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .spectrum-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .spectrum-title {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .spectrum-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+        
+        .slider-container {
+            position: relative;
+            margin: 20px 0 40px 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: linear-gradient(to right, #999, #666);
+            outline: none;
+            -webkit-appearance: none;
+            border: 1px solid #d0d0d0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .sub-dimensions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .dimension-card {
+            background: #ffffff;
+            border-radius: 0%;
+            padding: 20px;
+            border: 1px solid #d0d0d0;
+            transition: all 0.3s ease;
+        }
+
+        .dimension-title {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 18px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .dimension-spectrum {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 400;
+            color: #5a5a5a;
+            margin-bottom: 15px;
+        }
+
+        .current-position {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #8b4513;
+            margin-bottom: 15px;
+        }
+        
+        .devices-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .device-item {
+            background: #fafafa;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 0%;
+            font-size: 14px;
+            color: #1a1a1a;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .device-item:hover {
+            background: #f5f5f5;
+            border-color: #999;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .device-expanded {
+            background: #f5f5f5 !important;
+            border-color: #666 !important;
+        }
+        
+        .device-expand-icon {
+            float: right;
+            font-size: 12px;
+            color: #5a5a5a;
+            transition: transform 0.3s ease;
+        }
+
+        .device-expanded .device-expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .device-details {
+            margin-top: 12px;
+            padding: 16px;
+            background: #ffffff;
+            border-radius: 0%;
+            border: 1px solid #e0e0e0;
+            display: none;
+        }
+        
+        .device-details.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .device-definition {
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .device-examples {
+            margin-top: 12px;
+        }
+
+        .device-examples h5 {
+            font-size: 11px;
+            color: #5a5a5a;
+            margin: 0 0 8px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-item {
+            background: #f9f9f9;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 0%;
+            font-size: 12px;
+            color: #2a2a2a;
+            border-left: 2px solid #999;
+            line-height: 1.4;
+        }
+
+        .device-impact {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 0%;
+            border-left: 3px solid #666;
+        }
+
+        .device-impact h5 {
+            font-size: 11px;
+            color: #5a4a3a;
+            margin: 0 0 6px 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .device-impact p {
+            font-size: 12px;
+            color: #2a2a2a;
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .generate-standard-section {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .generate-standard-button {
+            background: #2a2a2a;
+            color: #f5f0e8;
+            border: 2px solid #1a1a1a;
+            padding: 15px 30px;
+            border-radius: 0%;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .generate-standard-button:hover {
+            background: #3a3a3a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .generate-description {
+            margin-top: 10px;
+            color: #5a5a5a;
+            font-size: 14px;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 0px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #1a1a1a;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #1a1a1a;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 0.6;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .standard-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 0px;
+            background: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #666;
+            outline: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .generate-final-button {
+            background: #2a2a2a;
+            color: #f5f0e8;
+            border: 2px solid #1a1a1a;
+            padding: 12px 25px;
+            border-radius: 0px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 0 0 auto;
+        }
+
+        .generate-final-button:hover {
+            background: #3a3a3a;
+            transform: translateY(-1px);
+        }
+
+        .view-schema-button {
+            background: #ffffff;
+            color: #2a2a2a;
+            border: 2px solid #2a2a2a;
+            padding: 12px 25px;
+            border-radius: 0px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 0 0 auto;
+        }
+
+        .view-schema-button:hover {
+            background: #f5f5f5;
+            transform: translateY(-1px);
+        }
+
+        .schema-viewer {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .schema-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .schema-output {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 0px;
+            padding: 20px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .generated-standard {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+
+        .standard-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .copy-button,
+        .download-button {
+            background: #3a3a3a;
+            color: #f5f0e8;
+            border: 1px solid #1a1a1a;
+            padding: 8px 16px;
+            border-radius: 0px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .copy-button:hover,
+        .download-button:hover {
+            background: #4a4a4a;
+        }
+
+        .standard-output {
+            background: #fafafa;
+            border: 1px solid #d0d0d0;
+            border-radius: 0px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .spectrum-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .spectrum-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .spectrum-tab {
+            padding: 12px 24px;
+            background: #ffffff;
+            border: 1px solid #d0d0d0;
+            border-radius: 0px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .spectrum-tab.active {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+        }
+
+        .spectrum-tab:hover {
+            background: #f5f5f5;
+            border-color: #999;
+        }
+        
+        .content-analysis {
+            background: #fafafa;
+            border-radius: 0px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #d0d0d0;
+        }
+
+        .content-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 1px solid #d0d0d0;
+            border-radius: 0px;
+            background: #ffffff;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .content-input:focus {
+            border-color: #666;
+            outline: none;
+        }
+
+        .analyze-button {
+            background: #2a2a2a;
+            color: #f5f0e8;
+            border: 2px solid #1a1a1a;
+            padding: 12px 30px;
+            border-radius: 0px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .analyze-button:hover {
+            background: #3a3a3a;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Tone engine and standards generator</h1>
+        <p>Explore a tone spectrum, then create a content standard to match.</p>
+    </div>
+    
+    <div class="spectrum-selector">
+        <div class="spectrum-tabs">
+            <div class="spectrum-tab active" data-spectrum="playful-serious">Playful ↔ Serious</div>
+            <div class="spectrum-tab" data-spectrum="casual-formal">Casual ↔ Formal</div>
+            <div class="spectrum-tab" data-spectrum="direct-indirect">Direct ↔ Indirect</div>
+            <div class="spectrum-tab" data-spectrum="warm-cool">Warm ↔ Cool</div>
+            <div class="spectrum-tab" data-spectrum="confident-humble">Confident ↔ Humble</div>
+        </div>
+    </div>
+    
+    <div class="spectrum-container">
+        <div class="spectrum-header">
+            <div class="spectrum-title" id="current-spectrum-title">Playful vs. Serious</div>
+            <div class="spectrum-labels">
+                <span id="left-label">Playful</span>
+                <span id="right-label">Serious</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="50" class="slider" id="main-slider">
+            </div>
+        </div>
+        
+        <div class="sub-dimensions" id="sub-dimensions">
+            <!-- Sub-dimensions will be populated by JavaScript -->
+        </div>
+        
+        <div class="generate-standard-section">
+            <button class="generate-standard-button" id="generate-standard-btn">
+                Generate content standard
+            </button>
+            <p class="generate-description">Create a content standard based on current tone configuration</p>
+        </div>
+    </div>
+
+    <!-- Content Standard Modal -->
+    <div class="modal-overlay" id="standard-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Generated content standard</h2>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="standard-form">
+                    <div class="form-group">
+                        <label for="standard-level">Scope level:</label>
+                        <select id="standard-level">
+                            <option value="Global">Global</option>
+                            <option value="Product">Product</option>
+                            <option value="Team">Team</option>
+                            <option value="Feature">Feature</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="standard-owner">Owner team:</label>
+                        <input type="text" id="standard-owner" placeholder="e.g., UX Writing, Content Design">
+                    </div>
+                    <div class="form-group">
+                        <label for="standard-domain">Domain:</label>
+                        <input type="text" id="standard-domain" placeholder="e.g., UX content, Marketing">
+                    </div>
+                    <div class="form-group">
+                        <label for="content-types">Content types:</label>
+                        <input type="text" id="content-types" placeholder="e.g., Interface text, notifications">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="generate-final-button" id="generate-final-btn">Generate standard</button>
+                    <button class="view-schema-button" id="view-schema-btn">View schema</button>
+                </div>
+                <div class="schema-viewer" id="schema-viewer" style="display: none;">
+                    <div class="schema-actions">
+                        <button class="copy-button" id="copy-schema">Copy schema to clipboard</button>
+                    </div>
+                    <pre class="schema-output" id="schema-output"></pre>
+                </div>
+                <div class="generated-standard" id="generated-standard" style="display: none;">
+                    <div class="standard-actions">
+                        <button class="copy-button" id="copy-standard">Copy to clipboard</button>
+                        <button class="download-button" id="download-standard">Download markdown</button>
+                    </div>
+                    <pre class="standard-output" id="standard-output"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const deviceDefinitions = {
+            // Language Flow Devices
+            'Assonance': {
+                definition: 'Repetition of similar vowel sounds within words to create musical quality and flow.',
+                examples: [
+                    '"Hear the mellow wedding bells" - creates smooth, flowing feel',
+                    '"Go slow over the road" - elongated "o" sounds slow perception',
+                    '"Try to light the fire" - "i" sounds create energy and urgency'
+                ],
+                impact: 'Creates perceived fluidity in reading, makes text feel more engaging and memorable. Can speed up or slow down perceived reading pace depending on vowel choice.'
+            },
+            'Consonance': {
+                definition: 'Repetition of consonant sounds, especially at the end of words, for rhythmic effect.',
+                examples: [
+                    '"Pitter patter" - creates urgency and movement',
+                    '"Last blast" - hard consonants add emphasis and finality',
+                    '"Silken, sullen, uncertain" - soft sounds create calm, dreamy mood'
+                ],
+                impact: 'Helps condense complex concepts efficiently. Makes content more memorable and can influence emotional response through sound association.'
+            },
+            'Smooth transitions': {
+                definition: 'Seamless flow between sentences and ideas using connecting words and phrases.',
+                examples: [
+                    '"First, set up your account. Next, choose your preferences..."',
+                    '"While you wait, here are some tips to get started..."',
+                    '"Now that you\'ve completed setup, let\'s explore your dashboard..."'
+                ],
+                impact: 'Reduces cognitive load in UX flows. Helps users feel guided rather than lost. Essential for effective onboarding experiences.'
+            },
+            'Contractions': {
+                definition: 'Shortened forms of word combinations (can\'t, we\'ll, you\'re) that create conversational tone.',
+                examples: [
+                    '"You\'ll love this feature" vs "You will love this feature"',
+                    '"Can\'t find what you\'re looking for?" vs "Cannot find what you are looking for?"',
+                    '"We\'ve got you covered" vs "We have got you covered"'
+                ],
+                impact: 'Instantly makes interface copy feel more approachable and human. Reduces perceived formality and creates connection with users.'
+            },
+            'Run-on sentences': {
+                definition: 'Intentionally longer sentences that create flow and urgency through connected thoughts.',
+                examples: [
+                    '"Set up your profile and we\'ll recommend content you love and connect you with people who share your interests"',
+                    '"Choose your plan, customize your experience, and start building something amazing today"',
+                    '"Upload your photos, apply filters, add captions, and share with friends all in one seamless flow"'
+                ],
+                impact: 'Can create excitement and momentum in conversion flows. Risk: may increase cognitive load if overused or in complex contexts.'
+            },
+            'Formal punctuation': {
+                definition: 'Standard, conservative punctuation usage without creative or expressive elements.',
+                examples: [
+                    '"Please review your settings. Click Save to continue."',
+                    '"Error: Unable to process request. Contact support for assistance."',
+                    '"Account created successfully. Welcome to the platform."'
+                ],
+                impact: 'Conveys reliability and professionalism. Essential for error states and formal processes like legal or financial flows.'
+            },
+            'Complete sentences': {
+                definition: 'Full grammatical structures with subject, verb, and complete thoughts.',
+                examples: [
+                    '"Your account has been successfully created." vs "Account created!"',
+                    '"Please enter your email address." vs "Email:"',
+                    '"This action cannot be undone." vs "Can\'t undo!"'
+                ],
+                impact: 'Provides clarity and completeness. Important for instructions and error messages where precision matters most.'
+            },
+            'Structured syntax': {
+                definition: 'Organized, predictable sentence patterns that follow formal grammar rules.',
+                examples: [
+                    '"To complete this action, please verify your identity."',
+                    '"Before proceeding, ensure all required fields are completed."',
+                    '"After saving your changes, you will be redirected to the dashboard."'
+                ],
+                impact: 'Reduces ambiguity in complex workflows. Helps non-native speakers and accessibility tools parse content correctly.'
+            },
+
+            // Energy Level Devices
+            'Exclamation points': {
+                definition: 'Punctuation that adds energy, enthusiasm, and emotional emphasis.',
+                examples: [
+                    '"Welcome to your new workspace!"',
+                    '"Great choice! Your plan has been upgraded."',
+                    '"You\'re all set! Time to explore your dashboard."'
+                ],
+                impact: 'Boosts emotional engagement and creates celebration moments. Overuse can feel overwhelming or unprofessional in business contexts.'
+            },
+            'Informal interjections': {
+                definition: 'Casual expressions and exclamations that add personality and energy.',
+                examples: [
+                    '"Oops! Something went wrong on our end."',
+                    '"Woohoo! Task completed successfully."',
+                    '"Hmm, we couldn\'t find that file anywhere."'
+                ],
+                impact: 'Humanizes error states and makes interactions feel conversational. Can reduce user frustration through empathy and personality.'
+            },
+            'Humor': {
+                definition: 'Light wit, wordplay, or amusing observations that entertain while informing.',
+                examples: [
+                    '"404: This page is playing hide and seek"',
+                    '"Your password is stronger than your morning coffee"',
+                    '"Saving your preferences faster than you can say \'customization\'"'
+                ],
+                impact: 'Creates memorable and shareable moments. Builds brand affinity. Risk: humor can fall flat or feel inappropriate in serious contexts.'
+            },
+            'Metaphors': {
+                definition: 'Figurative language that compares concepts to familiar objects or experiences.',
+                examples: [
+                    '"Your data dashboard" (comparing interface to car dashboard)',
+                    '"Navigate your workspace" (workspace as physical space)',
+                    '"Workflow pipeline" (process as plumbing system)'
+                ],
+                impact: 'Makes complex features instantly understandable. Creates mental models that guide user behavior and expectations.'
+            },
+            'Wordplay': {
+                definition: 'Clever manipulation of language including puns, double meanings, and creative word use.',
+                examples: [
+                    '"File not found? File not problem!" (error message)',
+                    '"Sync and you\'ll miss it" (for synchronization features)',
+                    '"Time to upgrade your game" (for premium features)'
+                ],
+                impact: 'Creates memorable moments and brand differentiation. Can backfire if it obscures meaning or feels forced in serious contexts.'
+            },
+            'Measured tone': {
+                definition: 'Controlled, even-tempered language that avoids emotional extremes.',
+                examples: [
+                    '"Your request is being processed."',
+                    '"Please review the following information carefully."',
+                    '"Changes have been saved successfully to your account."'
+                ],
+                impact: 'Builds trust through consistency and reliability. Appropriate for professional tools and serious workflows.'
+            },
+            'Factual statements': {
+                definition: 'Objective, information-focused language without emotional coloring.',
+                examples: [
+                    '"5 items selected for deletion"',
+                    '"Last backup completed: 2 hours ago"',
+                    '"Connection established with server"'
+                ],
+                impact: 'Provides clarity without bias. Essential for status updates and system information where accuracy matters most.'
+            },
+            'Professional language': {
+                definition: 'Business-appropriate vocabulary and tone suitable for workplace contexts.',
+                examples: [
+                    '"Schedule a consultation with our team"',
+                    '"Generate comprehensive reports for stakeholders"',
+                    '"Optimize your workflow efficiency through automation"'
+                ],
+                impact: 'Conveys competence and reliability. Important for B2B products and enterprise software where credibility is crucial.'
+            },
+
+            // Rhythmic Quality Devices
+            'Varied sentence length': {
+                definition: 'Mixing short and long sentences to create dynamic rhythm and maintain reader interest.',
+                examples: [
+                    '"Save time. Automate repetitive tasks with our workflow builder that learns from your patterns and suggests improvements."',
+                    '"Quick setup. Powerful results. Transform how your team collaborates across projects and departments."',
+                    '"Error detected. We\'re working to resolve this issue and will update you as soon as we have more information."'
+                ],
+                impact: 'Keeps users engaged through varied pacing. Short sentences create urgency and focus, longer ones provide necessary detail and context.'
+            },
+            'Staccato rhythm': {
+                definition: 'Short, punchy phrases that create urgency and directness.',
+                examples: [
+                    '"Sign up. Get started. Build something amazing."',
+                    '"Fast. Secure. Simple. That\'s our promise."',
+                    '"Upload. Edit. Share. Done in minutes."'
+                ],
+                impact: 'Creates momentum in conversion flows and feature descriptions. Great for landing pages and action sequences that need energy.'
+            },
+            'Quick tempo': {
+                definition: 'Rapid pace of information delivery that suggests speed and efficiency.',
+                examples: [
+                    '"Upload photos instantly, edit with one-click filters, share across all platforms simultaneously"',
+                    '"Search, find, book - all completed in under 30 seconds"',
+                    '"Connect, collaborate, create - your team\'s new workflow starts now"'
+                ],
+                impact: 'Conveys product speed and efficiency to users. Can overwhelm if users need time to process complex information.'
+            },
+            'Consistent rhythm': {
+                definition: 'Steady, predictable pacing that creates reliable, professional feel.',
+                examples: [
+                    '"Complete your profile. Verify your email address. Start your free trial period."',
+                    '"Review your order details. Choose your payment method. Confirm your purchase."',
+                    '"Select your preferences. Customize your dashboard. Begin your workflow."'
+                ],
+                impact: 'Builds trust through predictability. Helps users understand process flow and set appropriate expectations for each step.'
+            },
+            'Steady tempo': {
+                definition: 'Even-paced information delivery that allows for comprehension and processing.',
+                examples: [
+                    '"First, we\'ll gather your preferences and requirements. Then, we\'ll create your personalized experience based on your needs. Finally, we\'ll guide you through your first steps in the platform."'
+                ],
+                impact: 'Reduces cognitive overload in complex processes. Important for educational content and detailed onboarding sequences.'
+            },
+
+            // Creative Expression Devices
+            'Unique metaphors': {
+                definition: 'Original comparisons that haven\'t been overused in digital products.',
+                examples: [
+                    '"Your notification garden" (instead of notification center)',
+                    '"Workspace constellation" (for connected tools and apps)',
+                    '"Data archaeology" (for finding and analyzing old files)'
+                ],
+                impact: 'Creates distinctive brand voice and memorable experiences. Risk: may confuse users if metaphor is unclear or too abstract.'
+            },
+            'Creative wordplay': {
+                definition: 'Inventive language use that goes beyond common puns to create original expressions.',
+                examples: [
+                    '"Multitasking made multipossible with our platform"',
+                    '"Collaboration without the frustration or complication"',
+                    '"Simplify your complexities, amplify your possibilities"'
+                ],
+                impact: 'Differentiates from competitors and creates shareable moments. Must balance creativity with clarity to avoid confusion.'
+            },
+            'Unexpected comparisons': {
+                definition: 'Surprising analogies that reframe familiar concepts in new, thought-provoking ways.',
+                examples: [
+                    '"Your inbox is like a garden - it grows best when you tend to it regularly and remove the weeds"',
+                    '"Think of notifications as gentle taps on the shoulder, not alarm bells in your ear"',
+                    '"File organization is like interior design - everything should have its place and purpose"'
+                ],
+                impact: 'Helps users think differently about product features. Can shift behavior and mental models through creative reframing.'
+            },
+            'Standard metaphors': {
+                definition: 'Common, widely-understood comparisons used across digital products.',
+                examples: [
+                    '"Trash/Delete" (referencing wastepaper basket)',
+                    '"Desktop" (referencing physical desk surface)',
+                    '"File folders" (referencing physical filing system)'
+                ],
+                impact: 'Ensures universal comprehension through familiar, established concepts. Safe choice but may lack distinctiveness in crowded market.'
+            },
+            'Conventional language': {
+                definition: 'Standard terminology and phrasing common in digital interfaces.',
+                examples: [
+                    '"Sign in", "Log out", "Account Settings"',
+                    '"Save changes", "Cancel operation", "Submit form"',
+                    '"Loading content", "Error occurred", "Operation successful"'
+                ],
+                impact: 'Maximizes usability through established patterns and expectations. Users know exactly what to expect and how to respond.'
+            }
+        };
+
+        const spectrumData = {
+            'playful-serious': {
+                title: 'Playful vs. Serious',
+                leftLabel: 'Playful',
+                rightLabel: 'Serious',
+                dimensions: {
+                    fluidity: {
+                        title: 'Language flow',
+                        leftLabel: 'Fluid',
+                        rightLabel: 'Rigid',
+                        devices: {
+                            left: ['Assonance', 'Consonance', 'Smooth transitions', 'Contractions', 'Run-on sentences'],
+                            right: ['Formal punctuation', 'Complete sentences', 'Structured syntax', 'No contractions', 'Precise grammar']
+                        }
+                    },
+                    energy: {
+                        title: 'Energy level',
+                        leftLabel: 'Lighthearted',
+                        rightLabel: 'Earnest',
+                        devices: {
+                            left: ['Exclamation points', 'Informal interjections', 'Humor', 'Metaphors', 'Wordplay'],
+                            right: ['Measured tone', 'Factual statements', 'Professional language', 'Subdued punctuation', 'Technical precision']
+                        }
+                    },
+                    rhythm: {
+                        title: 'Rhythmic Quality',
+                        leftLabel: 'Bouncy',
+                        rightLabel: 'Measured',
+                        devices: {
+                            left: ['Varied sentence length', 'Staccato rhythm', 'Quick tempo', 'Short bursts', 'Conversational pace'],
+                            right: ['Consistent rhythm', 'Longer sentences', 'Steady tempo', 'Formal cadence', 'Deliberate pacing']
+                        }
+                    },
+                    creativity: {
+                        title: 'Creative Expression',
+                        leftLabel: 'Imaginative',
+                        rightLabel: 'Conventional',
+                        devices: {
+                            left: ['Unique metaphors', 'Creative wordplay', 'Unexpected comparisons', 'Inventive language', 'Novel expressions'],
+                            right: ['Standard metaphors', 'Conventional language', 'Expected comparisons', 'Traditional phrasing', 'Established expressions']
+                        }
+                    }
+                }
+            },
+            'casual-formal': {
+                title: 'Casual vs. Formal',
+                leftLabel: 'Casual',
+                rightLabel: 'Formal',
+                dimensions: {
+                    vocabulary: {
+                        title: 'Word Choice',
+                        leftLabel: 'Conversational',
+                        rightLabel: 'Professional',
+                        devices: {
+                            left: ['Contractions', 'Colloquialisms', 'Simple words', 'Everyday language', 'Slang when appropriate'],
+                            right: ['Full forms', 'Technical terms', 'Latinate vocabulary', 'Industry jargon', 'Precise terminology']
+                        }
+                    },
+                    structure: {
+                        title: 'Sentence Structure',
+                        leftLabel: 'Relaxed',
+                        rightLabel: 'Structured',
+                        devices: {
+                            left: ['Fragment sentences', 'Loose syntax', 'Conversational flow', 'Interrupted thoughts', 'Stream of consciousness'],
+                            right: ['Complete sentences', 'Parallel structure', 'Formal grammar', 'Complex syntax', 'Organized flow']
+                        }
+                    },
+                    address: {
+                        title: 'Reader Relationship',
+                        leftLabel: 'Familiar',
+                        rightLabel: 'Respectful Distance',
+                        devices: {
+                            left: ['Direct "you"', 'Personal examples', 'Shared experiences', 'Inclusive "we"', 'Friendly tone'],
+                            right: ['Third person', 'Professional examples', 'Objective stance', 'Formal address', 'Institutional voice']
+                        }
+                    },
+                    punctuation: {
+                        title: 'Punctuation Style',
+                        leftLabel: 'Expressive',
+                        rightLabel: 'Conservative',
+                        devices: {
+                            left: ['Ellipses for pause', 'Em dashes for emphasis', 'Exclamation points', 'Question marks for engagement', 'Parenthetical asides'],
+                            right: ['Standard periods', 'Semicolons', 'Colons for precision', 'Minimal exclamation', 'Formal comma usage']
+                        }
+                    }
+                }
+            },
+            'direct-indirect': {
+                title: 'Direct vs. Indirect',
+                leftLabel: 'Direct',
+                rightLabel: 'Indirect',
+                dimensions: {
+                    explicitness: {
+                        title: 'Clarity Level',
+                        leftLabel: 'Explicit',
+                        rightLabel: 'Subtle',
+                        devices: {
+                            left: ['Clear statements', 'Specific language', 'Concrete examples', 'Definitive terms', 'Unambiguous words'],
+                            right: ['Implied meaning', 'Abstract language', 'Metaphorical examples', 'Suggestive terms', 'Layered meaning']
+                        }
+                    },
+                    brevity: {
+                        title: 'Information Density',
+                        leftLabel: 'Concise',
+                        rightLabel: 'Elaborate',
+                        devices: {
+                            left: ['Short sentences', 'Key points only', 'Minimal qualifiers', 'Action-focused', 'Essential information'],
+                            right: ['Extended explanations', 'Context building', 'Multiple qualifiers', 'Background information', 'Comprehensive details']
+                        }
+                    },
+                    approach: {
+                        title: 'Communication Style',
+                        leftLabel: 'Blunt',
+                        rightLabel: 'Diplomatic',
+                        devices: {
+                            left: ['Imperative mood', 'No hedge words', 'Direct commands', 'Unqualified statements', 'Straightforward language'],
+                            right: ['Conditional mood', 'Hedge words', 'Polite requests', 'Qualified statements', 'Softening language']
+                        }
+                    },
+                    context: {
+                        title: 'Context Provision',
+                        leftLabel: 'Minimal Context',
+                        rightLabel: 'Rich Context',
+                        devices: {
+                            left: ['Jump to point', 'Assume understanding', 'Skip background', 'Focus on action', 'Essential facts only'],
+                            right: ['Build up to point', 'Explain background', 'Provide setup', 'Paint full picture', 'Comprehensive framing']
+                        }
+                    }
+                }
+            },
+            'warm-cool': {
+                title: 'Warm vs. Cool',
+                leftLabel: 'Warm',
+                rightLabel: 'Cool',
+                dimensions: {
+                    personality: {
+                        title: 'Personal Connection',
+                        leftLabel: 'Personal',
+                        rightLabel: 'Impersonal',
+                        devices: {
+                            left: ['First/second person', 'Personal anecdotes', 'Shared experiences', 'Emotional language', 'Individual focus'],
+                            right: ['Third person', 'General examples', 'Universal principles', 'Neutral language', 'Systematic focus']
+                        }
+                    },
+                    emotion: {
+                        title: 'Emotional Engagement',
+                        leftLabel: 'Empathetic',
+                        rightLabel: 'Neutral',
+                        devices: {
+                            left: ['Emotional words', 'Understanding phrases', 'Supportive language', 'Caring tone', 'Human concerns'],
+                            right: ['Factual language', 'Objective phrases', 'Informational tone', 'Clinical approach', 'Systematic concerns']
+                        }
+                    },
+                    interaction: {
+                        title: 'Engagement Style',
+                        leftLabel: 'Conversational',
+                        rightLabel: 'Informational',
+                        devices: {
+                            left: ['Questions to reader', 'Conversational markers', 'Interactive elements', 'Dialogue style', 'Back-and-forth feel'],
+                            right: ['Declarative statements', 'Formal markers', 'One-way communication', 'Lecture style', 'Broadcast feel']
+                        }
+                    },
+                    support: {
+                        title: 'Supportive Elements',
+                        leftLabel: 'Encouraging',
+                        rightLabel: 'Matter-of-fact',
+                        devices: {
+                            left: ['Positive reinforcement', 'Reassuring language', 'Motivational phrases', 'Success-focused', 'Confidence building'],
+                            right: ['Neutral statements', 'Factual information', 'Objective descriptions', 'Process-focused', 'Information delivery']
+                        }
+                    }
+                }
+            },
+            'confident-humble': {
+                title: 'Confident vs. Humble',
+                leftLabel: 'Confident',
+                rightLabel: 'Humble',
+                dimensions: {
+                    certainty: {
+                        title: 'Assertion Level',
+                        leftLabel: 'Assertive',
+                        rightLabel: 'Tentative',
+                        devices: {
+                            left: ['Strong modal verbs (will, must)', 'Definitive statements', 'Bold claims', 'Absolute terms', 'Unqualified assertions'],
+                            right: ['Weak modal verbs (might, could)', 'Tentative statements', 'Cautious claims', 'Qualified terms', 'Hedged assertions']
+                        }
+                    },
+                    knowledge: {
+                        title: 'Expertise Display',
+                        leftLabel: 'Authoritative',
+                        rightLabel: 'Collaborative',
+                        devices: {
+                            left: ['Expert language', 'Declarative mood', 'Teaching tone', 'Knowledge assumptions', 'Instructional approach'],
+                            right: ['Learning language', 'Questioning mood', 'Exploring tone', 'Curiosity expressions', 'Discovery approach']
+                        }
+                    },
+                    presentation: {
+                        title: 'Self-Presentation',
+                        leftLabel: 'Bold',
+                        rightLabel: 'Understated',
+                        devices: {
+                            left: ['Strong intensifiers', 'Superlatives', 'Emphatic punctuation', 'Powerful adjectives', 'Commanding verbs'],
+                            right: ['Minimal intensifiers', 'Moderate language', 'Subtle punctuation', 'Gentle adjectives', 'Suggestive verbs']
+                        }
+                    },
+                    qualification: {
+                        title: 'Qualification Level',
+                        leftLabel: 'Unqualified',
+                        rightLabel: 'Heavily Qualified',
+                        devices: {
+                            left: ['Absolute statements', 'No disclaimers', 'Direct claims', 'Unhedged assertions', 'Definitive language'],
+                            right: ['Conditional statements', 'Multiple disclaimers', 'Cautious claims', 'Hedged assertions', 'Tentative language']
+                        }
+                    }
+                }
+            }
+        };
+
+        let currentSpectrum = 'playful-serious';
+        let sliderValue = 50;
+
+        function createDeviceElement(device, isActive) {
+            const deviceElement = document.createElement('li');
+            deviceElement.className = `device-item ${isActive ? 'active' : ''}`;
+            
+            const deviceName = document.createElement('span');
+            deviceName.textContent = device;
+            
+            const expandIcon = document.createElement('span');
+            expandIcon.className = 'device-expand-icon';
+            expandIcon.textContent = '▼';
+            
+            deviceElement.appendChild(deviceName);
+            deviceElement.appendChild(expandIcon);
+            
+            // Create expandable content
+            const deviceDetails = document.createElement('div');
+            deviceDetails.className = 'device-details';
+            
+            if (deviceDefinitions[device]) {
+                const def = deviceDefinitions[device];
+                
+                deviceDetails.innerHTML = `
+                    <div class="device-definition">${def.definition}</div>
+                    
+                    <div class="device-examples">
+                        <h5>Examples:</h5>
+                        ${def.examples.map(example => `<div class="example-item">${example}</div>`).join('')}
+                    </div>
+                    
+                    <div class="device-impact">
+                        <h5>UX Impact:</h5>
+                        <p>${def.impact}</p>
+                    </div>
+                `;
+            } else {
+                deviceDetails.innerHTML = `
+                    <div class="device-definition">A ${device.toLowerCase()} technique used in tone modulation.</div>
+                    <div class="device-examples">
+                        <h5>Examples:</h5>
+                        <div class="example-item">Examples would be provided for this technique.</div>
+                    </div>
+                    <div class="device-impact">
+                        <h5>UX Impact:</h5>
+                        <p>This technique influences how users perceive and interact with content.</p>
+                    </div>
+                `;
+            }
+            
+            deviceElement.appendChild(deviceDetails);
+            
+            // Add click handler for expansion
+            deviceElement.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isExpanded = deviceElement.classList.contains('device-expanded');
+                
+                // Close all other expanded devices in this dimension
+                const allDevices = deviceElement.parentElement.querySelectorAll('.device-item');
+                allDevices.forEach(item => {
+                    item.classList.remove('device-expanded');
+                    item.querySelector('.device-details').classList.remove('show');
+                });
+                
+                if (!isExpanded) {
+                    deviceElement.classList.add('device-expanded');
+                    deviceDetails.classList.add('show');
+                }
+            });
+            
+            return deviceElement;
+        }
+
+        function updateDisplay() {
+            const data = spectrumData[currentSpectrum];
+            document.getElementById('current-spectrum-title').textContent = data.title;
+            document.getElementById('left-label').textContent = data.leftLabel;
+            document.getElementById('right-label').textContent = data.rightLabel;
+            
+            const subDimensionsContainer = document.getElementById('sub-dimensions');
+            subDimensionsContainer.innerHTML = '';
+            
+            Object.entries(data.dimensions).forEach(([key, dimension]) => {
+                const card = document.createElement('div');
+                card.className = 'dimension-card';
+                
+                // Calculate which devices to show based on slider position with 6 granular breakpoints
+                let currentPosition;
+                let devices;
+                let borderColor;
+                
+                if (sliderValue <= 16) {
+                    // Strongly left (0-16)
+                    currentPosition = `Strongly ${dimension.leftLabel}`;
+                    devices = dimension.devices.left;
+                    borderColor = '#8b7355';
+                } else if (sliderValue <= 33) {
+                    // Moderately left (17-33)
+                    currentPosition = `Moderately ${dimension.leftLabel}`;
+                    devices = [...dimension.devices.left.slice(0, 4), ...dimension.devices.right.slice(0, 1)];
+                    borderColor = '#8b7355';
+                } else if (sliderValue <= 49) {
+                    // Slightly left (34-49)
+                    currentPosition = `Slightly ${dimension.leftLabel}`;
+                    devices = [...dimension.devices.left.slice(0, 3), ...dimension.devices.right.slice(0, 2)];
+                    borderColor = '#7a6850';
+                } else if (sliderValue <= 66) {
+                    // Slightly right (50-66)
+                    currentPosition = `Slightly ${dimension.rightLabel}`;
+                    devices = [...dimension.devices.left.slice(0, 2), ...dimension.devices.right.slice(0, 3)];
+                    borderColor = '#6a5845';
+                } else if (sliderValue <= 83) {
+                    // Moderately right (67-83)
+                    currentPosition = `Moderately ${dimension.rightLabel}`;
+                    devices = [...dimension.devices.left.slice(0, 1), ...dimension.devices.right.slice(0, 4)];
+                    borderColor = '#5a4a3a';
+                } else {
+                    // Strongly right (84-100)
+                    currentPosition = `Strongly ${dimension.rightLabel}`;
+                    devices = dimension.devices.right;
+                    borderColor = '#5a4a3a';
+                }
+
+                card.style.borderColor = borderColor;
+                card.style.borderWidth = '2px';
+                card.style.borderStyle = 'solid';
+                
+                const devicesList = document.createElement('ul');
+                devicesList.className = 'devices-list';
+                
+                devices.forEach(device => {
+                    const deviceElement = createDeviceElement(device, true);
+                    devicesList.appendChild(deviceElement);
+                });
+                
+                card.innerHTML = `
+                    <div class="dimension-title">${dimension.title}</div>
+                    <div class="dimension-spectrum">
+                        <span>${dimension.leftLabel}</span>
+                        <span>${dimension.rightLabel}</span>
+                    </div>
+                    <div class="current-position">${currentPosition}</div>
+                `;
+                
+                card.appendChild(devicesList);
+                subDimensionsContainer.appendChild(card);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('main-slider').addEventListener('input', function(e) {
+            sliderValue = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        document.querySelectorAll('.spectrum-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.spectrum-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentSpectrum = this.dataset.spectrum;
+                updateDisplay();
+            });
+        });
+
+        // Content standard generation functionality
+        document.getElementById('generate-standard-btn').addEventListener('click', function() {
+            document.getElementById('standard-modal').style.display = 'flex';
+        });
+
+        document.getElementById('modal-close').addEventListener('click', function() {
+            document.getElementById('standard-modal').style.display = 'none';
+        });
+
+        document.getElementById('standard-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        document.getElementById('generate-final-btn').addEventListener('click', function() {
+            generateContentStandard();
+        });
+
+        document.getElementById('view-schema-btn').addEventListener('click', function() {
+            const schemaViewer = document.getElementById('schema-viewer');
+            const schemaOutput = document.getElementById('schema-output');
+
+            if (schemaViewer.style.display === 'none' || schemaViewer.style.display === '') {
+                // Load and display schema
+                schemaOutput.textContent = getSchemaContent();
+                schemaViewer.style.display = 'block';
+                this.textContent = 'Hide schema';
+            } else {
+                // Hide schema
+                schemaViewer.style.display = 'none';
+                this.textContent = 'View schema';
+            }
+        });
+
+        document.getElementById('copy-schema').addEventListener('click', function() {
+            const schemaText = document.getElementById('schema-output').textContent;
+            navigator.clipboard.writeText(schemaText).then(() => {
+                alert('Schema copied to clipboard!');
+            });
+        });
+
+        document.getElementById('copy-standard').addEventListener('click', function() {
+            const standardText = document.getElementById('standard-output').textContent;
+            navigator.clipboard.writeText(standardText).then(() => {
+                alert('Content standard copied to clipboard!');
+            });
+        });
+
+        document.getElementById('download-standard').addEventListener('click', function() {
+            const standardText = document.getElementById('standard-output').textContent;
+            const blob = new Blob([standardText], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tone-voice-standard.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        function generateContentStandard() {
+            const data = spectrumData[currentSpectrum];
+            const level = document.getElementById('standard-level').value;
+            const owner = document.getElementById('standard-owner').value || 'Content Design Team';
+            const domain = document.getElementById('standard-domain').value || 'UX content';
+            const contentTypes = document.getElementById('content-types').value || 'Interface text, notifications';
+
+            // Determine tone characteristics based on slider position
+            const positioning = getPositioningDetails(sliderValue);
+            const toneName = `${positioning.intensity} ${positioning.direction}`;
+            const toneDescription = `${positioning.intensity.toLowerCase()} ${positioning.direction.toLowerCase()}`;
+            const currentDate = new Date().toISOString().split('T')[0];
+            const standardId = `TONE-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+
+            // Get sub-dimension breakdowns
+            const subDimensionBreakdown = generateSubDimensionBreakdown();
+            const activeDevices = getAllActiveDevicesWithCategories();
+            const antiPatterns = getAntiPatterns();
+
+            const standard = `# Tone of Voice Content Standard v2.0
+
+## 1. Metadata
+\`\`\`yaml
+id: ${standardId}
+type: tone_voice
+spectrum: ${currentSpectrum}
+position: ${sliderValue}
+level: ${level}
+owner: ${owner}
+version: 2.0
+created: ${currentDate}
+last_updated: ${currentDate}
+related_standards: []
+\`\`\`
+
+---
+
+## 2. Context
+- **Domain**: ${domain}
+- **Content types**: ${contentTypes}
+- **Target audience**: End users, internal teams
+- **Channel**: Web interface, mobile app
+- **Scope boundaries**: Applies to ${contentTypes.toLowerCase()} across ${domain.toLowerCase()} contexts
+
+---
+
+## 3. Tone Configuration
+
+### 3.1 Primary Positioning
+- **Spectrum**: ${data.title}
+- **Position**: ${sliderValue} out of 100 (${toneName})
+- **Rationale**: This positioning creates ${getToneCharacteristics()} that aligns with user needs and brand voice requirements for ${domain.toLowerCase()}.
+
+### 3.2 Sub-Dimension Breakdown
+
+${subDimensionBreakdown}
+
+---
+
+## 4. Linguistic Guidance
+
+### 4.1 Primary Devices (DO Use)
+
+${generatePrimaryDevicesSection(activeDevices)}
+
+### 4.2 Secondary Devices (Use Sparingly)
+
+${generateSecondaryDevicesSection()}
+
+### 4.3 Avoid (Anti-Patterns)
+
+${antiPatterns.text}
+
+### 4.4 Content Patterns
+
+**Sentence structure**: ${getSentenceStructureGuidance()}
+**Punctuation preferences**: ${getPunctuationGuidance()}
+**Word choice principles**: ${getWordChoiceGuidance()}
+**Rhythm/Pacing**: ${getRhythmGuidance()}
+
+---
+
+## 5. Examples
+
+### 5.1 Correct Usage
+
+#### Interface Labels
+\`\`\`
+Context: Primary navigation and action buttons
+${generateCorrectExamples()}
+Why it works: Demonstrates ${toneDescription} positioning through appropriate device usage
+\`\`\`
+
+#### Notifications
+\`\`\`
+Context: System messages and status updates
+${generateNotificationExamples()}
+Why it works: Maintains consistency with ${toneName.toLowerCase()} tone across all touchpoints
+\`\`\`
+
+#### Error Messages
+\`\`\`
+Context: Input validation and system errors
+${generateErrorExamples()}
+Why it works: Balances ${positioning.direction.toLowerCase()} characteristics with user needs
+\`\`\`
+
+### 5.2 Incorrect Usage with Corrections
+
+${generateIncorrectWithCorrections()}
+
+---
+
+## 6. Sub-Dimension Matrix
+
+| Sub-Dimension | Position | Key Devices | How It Appears |
+|---------------|----------|-------------|----------------|
+${generateSubDimensionMatrix()}
+
+---
+
+## 7. Implementation
+
+### 7.1 Validation Rules
+\`\`\`json
+{
+  "tone_positioning": {
+    "spectrum": "${currentSpectrum}",
+    "target_position": ${sliderValue},
+    "acceptable_range": [${Math.max(0, sliderValue - 10)}, ${Math.min(100, sliderValue + 10)}],
+    "sub_dimensions": {
+${generateSubDimensionValidation()}
+    },
+    "anti_patterns": ${JSON.stringify(antiPatterns.devices)}
+  }
+}
+\`\`\`
+
+### 7.2 Automated Checks
+\`\`\`yaml
+content_rules:
+  - name: overall_spectrum_position
+    trigger: content_analysis
+    validation: position_within_acceptable_range
+    error: "Content tone does not match target positioning"
+
+  - name: subdimension_device_presence
+    trigger: linguistic_analysis
+    validation: minimum_devices_present_per_dimension
+    warning: "Consider using more recommended devices for sub-dimensions"
+
+  - name: anti_pattern_detection
+    trigger: linguistic_analysis
+    validation: no_opposite_spectrum_devices
+    error: "Detected conflicting devices that undermine ${toneName.toLowerCase()} positioning"
+
+  - name: consistency_check
+    trigger: multi_content_analysis
+    validation: tone_consistent_across_content_types
+    warning: "Tone variance detected across different content types"
+\`\`\`
+
+---
+
+## 8. Testing Criteria
+
+**Spectrum Position**
+- [ ] Overall position within acceptable range (${sliderValue} ±10 points)
+- [ ] Tone intensity matches ${toneName.toLowerCase()} level
+
+**Sub-Dimension Adherence**
+- [ ] Each sub-dimension demonstrates correct stance
+- [ ] Minimum 60% of recommended devices present per sub-dimension
+- [ ] Devices applied appropriately in context
+
+**Quality Checks**
+- [ ] No anti-pattern devices from opposite spectrum
+- [ ] Consistent application across all content types in scope
+- [ ] Context appropriateness score above 75%
+- [ ] User comprehension validated (if applicable)
+
+**Integration**
+- [ ] Aligns with related standards
+- [ ] Works across defined channels
+- [ ] Scalable to team implementation
+
+---
+
+## 9. Maintenance
+
+- **Review Cycle**: Quarterly
+- **Trigger Events**:
+  - Major product/brand changes
+  - Audience shift
+  - Tone positioning adjustment
+  - Sub-dimension rebalancing
+- **Approval Process**: ${owner}, Content standards governance committee
+- **Communication Plan**: Share updates via team channels, update documentation
+
+---
+
+*Generated on ${currentDate} using Tone of Voice Engine*
+*Spectrum: ${data.title} | Position: ${sliderValue}/100 | Configuration: ${toneName}*`;
+
+            document.getElementById('standard-output').textContent = standard;
+            document.getElementById('generated-standard').style.display = 'block';
+        }
+
+        function getCurrentActiveDevices() {
+            const data = spectrumData[currentSpectrum];
+            const allDevices = [];
+            
+            Object.values(data.dimensions).forEach(dimension => {
+                if (sliderValue <= 33) {
+                    allDevices.push(...dimension.devices.left.slice(0, 3));
+                } else if (sliderValue >= 67) {
+                    allDevices.push(...dimension.devices.right.slice(0, 3));
+                } else {
+                    allDevices.push(...dimension.devices.left.slice(0, 2));
+                    allDevices.push(...dimension.devices.right.slice(0, 2));
+                }
+            });
+            
+            // Remove duplicates and return first 8
+            return [...new Set(allDevices)].slice(0, 8);
+        }
+
+        function getToneCharacteristics() {
+            if (sliderValue <= 25) {
+                return "highly engaging, expressive content that prioritizes connection and personality";
+            } else if (sliderValue <= 50) {
+                return "balanced content that maintains approachability while ensuring clarity";
+            } else if (sliderValue <= 75) {
+                return "professional content that emphasizes reliability and competence";
+            } else {
+                return "formal, authoritative content that prioritizes precision and trustworthiness";
+            }
+        }
+
+        function generateDeviceGuidance(devices) {
+            const categories = {
+                'sound_rhythm': [],
+                'structural': [],
+                'lexical': [],
+                'semantic': [],
+                'conversational': [],
+                'punctuation': [],
+                'pacing': [],
+                'cognitive': []
+            };
+
+            devices.forEach(device => {
+                // Categorize devices (simplified categorization)
+                if (['Assonance', 'Consonance', 'Rhythm', 'Tempo'].some(d => device.includes(d))) {
+                    categories.sound_rhythm.push(device);
+                } else if (['sentences', 'structure', 'syntax'].some(d => device.toLowerCase().includes(d))) {
+                    categories.structural.push(device);
+                } else if (['Contractions', 'vocabulary', 'Modal verbs'].some(d => device.includes(d))) {
+                    categories.lexical.push(device);
+                } else {
+                    categories.conversational.push(device);
+                }
+            });
+
+            let guidance = '';
+            Object.entries(categories).forEach(([category, devices]) => {
+                if (devices.length > 0) {
+                    guidance += `- **${category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}**: Use ${devices.join(', ')}\n`;
+                }
+            });
+
+            return guidance || '- **General**: Apply devices appropriate for the selected tone positioning';
+        }
+
+        function generateCorrectExamples() {
+            const data = spectrumData[currentSpectrum];
+            if (sliderValue <= 33) {
+                return `- "Let's get your account set up!"
+- "You're doing great so far"
+- "Oops! Something went wrong, but we'll fix it right up"`;
+            } else if (sliderValue >= 67) {
+                return `- "Please complete your account setup."
+- "Your progress has been recorded."
+- "An error has occurred. Please contact support for assistance."`;
+            } else {
+                return `- "Ready to set up your account?"
+- "You're making good progress"
+- "We encountered an issue. Let's resolve this together"`;
+            }
+        }
+
+        function generateNotificationExamples() {
+            if (sliderValue <= 33) {
+                return `- "Woohoo! Your file uploaded successfully"
+- "Just a heads up - your session expires in 5 minutes"`;
+            } else if (sliderValue >= 67) {
+                return `- "File upload completed successfully"
+- "Session will expire in 5 minutes"`;
+            } else {
+                return `- "Your file uploaded successfully"
+- "Your session expires in 5 minutes"`;
+            }
+        }
+
+        function generateIncorrectExamples() {
+            const data = spectrumData[currentSpectrum];
+            const opposite = sliderValue <= 50 ? data.rightLabel : data.leftLabel;
+
+            if (sliderValue <= 33) {
+                return `- "Your request has been processed per standard protocol" (Too formal/serious)
+- "Please refer to documentation section 4.2.1" (Overly technical)`;
+            } else if (sliderValue >= 67) {
+                return `- "Yay! We totally got your request!" (Too casual/playful)
+- "Oopsie! Something went a bit wonky" (Inappropriate informality)`;
+            } else {
+                return `- "OMG! Your account is like, totally ready!" (Too extreme ${data.leftLabel.toLowerCase()})
+- "Request processed according to regulation 47-B" (Too extreme ${data.rightLabel.toLowerCase()})`;
+            }
+        }
+
+        // New helper functions for v2.0 schema generation
+
+        function getPositioningDetails(value) {
+            const data = spectrumData[currentSpectrum];
+            let intensity, direction;
+
+            if (value <= 16) {
+                intensity = 'Strongly';
+                direction = data.leftLabel;
+            } else if (value <= 33) {
+                intensity = 'Moderately';
+                direction = data.leftLabel;
+            } else if (value <= 49) {
+                intensity = 'Slightly';
+                direction = data.leftLabel;
+            } else if (value <= 66) {
+                intensity = 'Slightly';
+                direction = data.rightLabel;
+            } else if (value <= 83) {
+                intensity = 'Moderately';
+                direction = data.rightLabel;
+            } else {
+                intensity = 'Strongly';
+                direction = data.rightLabel;
+            }
+
+            return { intensity, direction };
+        }
+
+        function getSubDimensionPositioning(value) {
+            if (value <= 16) return 'Strongly';
+            if (value <= 33) return 'Moderately';
+            if (value <= 49) return 'Slightly';
+            if (value <= 66) return 'Slightly';
+            if (value <= 83) return 'Moderately';
+            return 'Strongly';
+        }
+
+        function generateSubDimensionBreakdown() {
+            const data = spectrumData[currentSpectrum];
+            let breakdown = '';
+
+            Object.entries(data.dimensions).forEach(([key, dimension]) => {
+                const positioning = getSubDimensionPositioning(sliderValue);
+                const direction = sliderValue <= 50 ? dimension.leftLabel : dimension.rightLabel;
+                const devices = sliderValue <= 50 ? dimension.devices.left : dimension.devices.right;
+                const activeDevices = devices.slice(0, 3);
+
+                breakdown += `#### Sub-Dimension: ${dimension.title}
+- **Spectrum**: ${dimension.leftLabel} ← → ${dimension.rightLabel}
+- **Positioning**: ${positioning} ${direction}
+- **Active Devices** (3-5 specific techniques):
+${activeDevices.map((device, idx) => `  ${idx + 1}. **${device}**: Apply in ${dimension.title.toLowerCase()} to achieve ${direction.toLowerCase()} quality`).join('\n')}
+- **Manifestation**: Content ${dimension.title.toLowerCase()} demonstrates ${positioning.toLowerCase()} ${direction.toLowerCase()} characteristics through ${activeDevices[0].toLowerCase()}
+
+`;
+            });
+
+            return breakdown;
+        }
+
+        function getAllActiveDevicesWithCategories() {
+            const data = spectrumData[currentSpectrum];
+            const devicesByCategory = {};
+
+            Object.entries(data.dimensions).forEach(([key, dimension]) => {
+                const devices = sliderValue <= 50 ? dimension.devices.left : dimension.devices.right;
+                const activeDevices = devices.slice(0, 3);
+
+                if (!devicesByCategory[dimension.title]) {
+                    devicesByCategory[dimension.title] = [];
+                }
+                devicesByCategory[dimension.title].push(...activeDevices);
+            });
+
+            return devicesByCategory;
+        }
+
+        function getAntiPatterns() {
+            const data = spectrumData[currentSpectrum];
+            const positioning = getPositioningDetails(sliderValue);
+            let antiPatternsText = '';
+            let antiPatternsArray = [];
+
+            // Get devices from opposite side of spectrum
+            Object.entries(data.dimensions).forEach(([key, dimension]) => {
+                const oppositeDevices = sliderValue <= 50 ? dimension.devices.right : dimension.devices.left;
+                const oppositeLabel = sliderValue <= 50 ? dimension.rightLabel : dimension.leftLabel;
+
+                oppositeDevices.slice(0, 2).forEach(device => {
+                    antiPatternsText += `- ❌ **${device}**: Conflicts with ${positioning.intensity.toLowerCase()} ${positioning.direction.toLowerCase()} positioning by introducing ${oppositeLabel.toLowerCase()} characteristics\n`;
+                    antiPatternsArray.push(device);
+                });
+            });
+
+            return { text: antiPatternsText, devices: antiPatternsArray };
+        }
+
+        function generatePrimaryDevicesSection(devicesByCategory) {
+            let section = '';
+
+            Object.entries(devicesByCategory).forEach(([category, devices]) => {
+                devices.slice(0, 2).forEach(device => {
+                    section += `**${device}**
+- **Definition**: A linguistic technique in ${category.toLowerCase()} that creates specific tonal effects
+- **Application**: Use ${device.toLowerCase()} in your content to reinforce the desired tone positioning
+- **Example**: "${getDeviceExample(device)}"
+
+`;
+                });
+            });
+
+            return section;
+        }
+
+        function getDeviceExample(device) {
+            // Simplified examples - in production these would be more sophisticated
+            const examples = {
+                'Contractions': "Let's get started",
+                'Exclamation points': "Welcome!",
+                'Formal punctuation': "Please proceed.",
+                'Complete sentences': "Your request has been received.",
+                'Humor': "Don't worry, we've got your back!",
+                'Professional language': "We recommend the following approach.",
+                'Varied sentence length': "Ready? Let's go. Time to explore.",
+                'Consistent rhythm': "Follow these steps. Review the options. Make your selection."
+            };
+
+            return examples[device] || "Example text demonstrating this device";
+        }
+
+        function generateSecondaryDevicesSection() {
+            return `- Modal verbs: Use occasionally to soften directives
+- Rhetorical questions: Use sparingly for engagement
+- Transitional phrases: Use when connecting complex ideas`;
+        }
+
+        function getSentenceStructureGuidance() {
+            if (sliderValue <= 33) {
+                return "Varied length, fragments acceptable, conversational flow";
+            } else if (sliderValue >= 67) {
+                return "Complete sentences, consistent structure, grammatically precise";
+            } else {
+                return "Primarily complete sentences with occasional variation";
+            }
+        }
+
+        function getPunctuationGuidance() {
+            if (sliderValue <= 33) {
+                return "Liberal use of exclamation points, em dashes, and ellipses for expressiveness";
+            } else if (sliderValue >= 67) {
+                return "Formal punctuation (periods, commas, semicolons), minimal exclamation";
+            } else {
+                return "Standard punctuation with selective emphasis";
+            }
+        }
+
+        function getWordChoiceGuidance() {
+            if (sliderValue <= 33) {
+                return "Colloquial language, contractions, accessible vocabulary";
+            } else if (sliderValue >= 67) {
+                return "Professional terminology, no contractions, precise vocabulary";
+            } else {
+                return "Clear, professional language with selective accessibility";
+            }
+        }
+
+        function getRhythmGuidance() {
+            if (sliderValue <= 33) {
+                return "Quick tempo, varied rhythm, conversational pacing";
+            } else if (sliderValue >= 67) {
+                return "Measured tempo, consistent rhythm, deliberate pacing";
+            } else {
+                return "Moderate tempo with balanced rhythm";
+            }
+        }
+
+        function generateErrorExamples() {
+            if (sliderValue <= 33) {
+                return `Example: "Oops! That didn't work. Let's try again."
+Why it works: Uses informal language and contractions`;
+            } else if (sliderValue >= 67) {
+                return `Example: "An error occurred. Please verify your input and try again."
+Why it works: Uses formal language and complete sentences`;
+            } else {
+                return `Example: "Something went wrong. Please check your input and try again."
+Why it works: Balances clarity with approachability`;
+            }
+        }
+
+        function generateIncorrectWithCorrections() {
+            if (sliderValue <= 33) {
+                return `\`\`\`
+❌ Incorrect: "Your request has been processed according to standard protocol."
+Why it fails: Too formal - uses technical language that conflicts with playful/casual positioning
+✓ Correct: "Got it! We're on it."
+How it's fixed: Applied contractions, informal phrasing, and exclamation point
+\`\`\`
+
+\`\`\`
+❌ Incorrect: "Please refer to section 4.2.1 of the documentation."
+Why it fails: Overly technical reference undermines approachable tone
+✓ Correct: "Check out our help docs for more info!"
+How it's fixed: Used casual phrasing, contractions, and friendly punctuation
+\`\`\``;
+            } else if (sliderValue >= 67) {
+                return `\`\`\`
+❌ Incorrect: "Yay! We totally got your request!"
+Why it fails: Too casual - exclamation and informal language conflict with professional positioning
+✓ Correct: "Your request has been received."
+How it's fixed: Applied formal punctuation, complete sentence, professional language
+\`\`\`
+
+\`\`\`
+❌ Incorrect: "Oopsie! Something went a bit wonky."
+Why it fails: Playful language undermines serious, professional tone
+✓ Correct: "An error occurred. Please contact support for assistance."
+How it's fixed: Used precise language, formal structure, professional terminology
+\`\`\``;
+            } else {
+                return `\`\`\`
+❌ Incorrect: "OMG! Your account is like, totally ready!"
+Why it fails: Too extreme playful - conflicts with balanced positioning
+✓ Correct: "Your account is ready to use."
+How it's fixed: Applied clear, straightforward language without excessive informality
+\`\`\``;
+            }
+        }
+
+        function generateSubDimensionMatrix() {
+            const data = spectrumData[currentSpectrum];
+            let rows = '';
+
+            Object.entries(data.dimensions).forEach(([key, dimension]) => {
+                const positioning = getSubDimensionPositioning(sliderValue);
+                const direction = sliderValue <= 50 ? dimension.leftLabel : dimension.rightLabel;
+                const devices = sliderValue <= 50 ? dimension.devices.left : dimension.devices.right;
+                const keyDevices = devices.slice(0, 3).join(', ');
+                const manifestation = `${positioning} ${direction.toLowerCase()} quality in ${dimension.title.toLowerCase()}`;
+
+                rows += `| ${dimension.title} | ${positioning} ${direction} | ${keyDevices} | ${manifestation} |\n`;
+            });
+
+            return rows;
+        }
+
+        function generateSubDimensionValidation() {
+            const data = spectrumData[currentSpectrum];
+            let validation = '';
+
+            Object.entries(data.dimensions).forEach(([key, dimension], index, array) => {
+                const positioning = getSubDimensionPositioning(sliderValue);
+                const direction = sliderValue <= 50 ? dimension.leftLabel : dimension.rightLabel;
+                const devices = sliderValue <= 50 ? dimension.devices.left : dimension.devices.right;
+                const requiredDevices = devices.slice(0, 3);
+
+                validation += `      "${key}": {
+        "name": "${dimension.title}",
+        "target_stance": "${positioning} ${direction}",
+        "required_devices": ${JSON.stringify(requiredDevices)},
+        "minimum_device_count": 2
+      }${index < array.length - 1 ? ',' : ''}
+`;
+            });
+
+            return validation;
+        }
+
+        function getSchemaContent() {
+            return `# Tone of Voice Content Standard Schema v2.0
+
+## Purpose
+This schema defines the structure for tone-of-voice content standards generated by the Tone Engine tool. Version 2.0 introduces granular sub-dimension tracking and eliminates redundancy while adding specificity.
+
+---
+
+## 1. Metadata
+\`\`\`yaml
+id: [STANDARD_ID]                     # Format: TONE-XXX (e.g., TONE-347)
+type: tone_voice                      # Standard type
+spectrum: [SPECTRUM_NAME]             # e.g., playful-serious, casual-formal
+position: [0-100]                     # Numerical position on spectrum (e.g., 76)
+level: [SCOPE_LEVEL]                  # Global, Product, Team, Feature
+owner: [OWNER_TEAM]                   # Team responsible for standard
+version: 2.0                          # Schema version (always 2.0 for this format)
+created: [YYYY-MM-DD]                 # Creation date
+last_updated: [YYYY-MM-DD]            # Last modification
+related_standards: []                 # Array of related standard IDs
+\`\`\`
+
+---
+
+## 2. Context
+- **Domain**: [APPLICATION_AREA] (e.g., UX content, Marketing, Documentation)
+- **Content types**: [SPECIFIC_TYPES] (e.g., Interface text, notifications, error messages)
+- **Target audience**: [AUDIENCE] (e.g., End users, Internal teams)
+- **Channel**: [MEDIUM] (e.g., Web interface, Mobile app, Email)
+- **Scope boundaries**: [WHAT'S_INCLUDED_EXCLUDED]
+
+---
+
+## 3. Tone Configuration
+
+### 3.1 Primary Positioning
+- **Spectrum**: [SPECTRUM_NAME] (e.g., "Playful vs. Serious")
+- **Position**: [VALUE] out of 100 ([INTENSITY] [DIRECTION])
+  - Example: "76 out of 100 (Moderately Serious)"
+- **Rationale**: [WHY_THIS_POSITION] (Business context, brand alignment, user needs)
+
+### 3.2 Sub-Dimension Breakdown
+
+Document each of the 4 sub-dimensions with granular detail. Each spectrum has 4 unique sub-dimensions that contribute to the overall tone positioning.
+
+**Example for "Playful vs. Serious" at position 76:**
+- Language flow: Moderately Rigid
+- Energy level: Moderately Earnest
+- Rhythmic Quality: Moderately Measured
+- Creative Expression: Moderately Conventional
+
+#### Sub-Dimension: [NAME]
+- **Spectrum**: [LEFT_LABEL] ← → [RIGHT_LABEL]
+- **Positioning**: [INTENSITY] [DIRECTION]
+  - Example: "Moderately Rigid" or "Slightly Fluid"
+- **Active Devices** (3-5 specific techniques):
+  1. **[Device Name]**: Apply in [dimension name] to achieve [quality] quality
+  2. **[Device Name]**: Apply in [dimension name] to achieve [quality] quality
+  3. **[Device Name]**: Apply in [dimension name] to achieve [quality] quality
+- **Manifestation**: Content [dimension name] demonstrates [intensity] [direction] characteristics through [primary device]
+
+---
+
+## 4. Linguistic Guidance
+
+### 4.1 Primary Devices (DO Use)
+List 5-8 key devices with actionable guidance:
+
+**[Device 1 Name]**
+- **Definition**: [What it is]
+- **Application**: [How to use it in your content types]
+- **Example**: "[Concrete example]"
+
+### 4.2 Secondary Devices (Use Sparingly)
+Devices that may appear occasionally but aren't core to this positioning:
+- [Device name]: [When to use]
+- [Device name]: [When to use]
+
+### 4.3 Avoid (Anti-Patterns)
+Devices from opposite spectrum to explicitly avoid:
+- ❌ **[Device Name]**: [Why it conflicts with this positioning]
+- ❌ **[Device Name]**: [Why it conflicts with this positioning]
+
+### 4.4 Content Patterns
+Specific structural guidance:
+- **Sentence structure**: [Guidelines]
+- **Punctuation preferences**: [Guidelines]
+- **Word choice principles**: [Guidelines]
+- **Rhythm/Pacing**: [Guidelines]
+
+---
+
+## 5. Examples
+
+### 5.1 Correct Usage
+
+#### Interface Labels
+\`\`\`
+Context: [Where this appears]
+[List of 3-5 example texts]
+Why it works: [Devices/positioning demonstrated]
+\`\`\`
+
+#### Notifications
+\`\`\`
+Context: [Where this appears]
+[List of 2-3 example texts]
+Why it works: [Devices/positioning demonstrated]
+\`\`\`
+
+#### Error Messages
+\`\`\`
+Context: [Where this appears]
+Example: "[The actual text]"
+Why it works: [Specific devices used]
+Why it works: [Overall positioning alignment]
+\`\`\`
+
+### 5.2 Incorrect Usage with Corrections
+
+Provide 2-3 examples in this format:
+
+\`\`\`
+❌ Incorrect: "[The text]"
+Why it fails: [What's wrong - which devices conflict with positioning]
+✓ Correct: "[Revised text]"
+How it's fixed: [What devices were applied to fix it]
+\`\`\`
+
+---
+
+## 6. Sub-Dimension Matrix
+
+Quick reference showing interconnected tone dimensions:
+
+| Sub-Dimension | Position | Key Devices | How It Appears |
+|---------------|----------|-------------|----------------|
+| [Dimension 1] | [Stance] | [List 3] | [Brief manifestation] |
+| [Dimension 2] | [Stance] | [List 3] | [Brief manifestation] |
+| [Dimension 3] | [Stance] | [List 3] | [Brief manifestation] |
+| [Dimension 4] | [Stance] | [List 3] | [Brief manifestation] |
+
+---
+
+## 7. Implementation
+
+### 7.1 Validation Rules
+\`\`\`json
+{
+  "tone_positioning": {
+    "spectrum": "[spectrum-id]",
+    "target_position": XX,
+    "acceptable_range": [XX, XX],
+    "sub_dimensions": {
+      "[dimension-1-key]": {
+        "name": "[Dimension Name]",
+        "target_stance": "[Intensity Direction]",
+        "required_devices": ["device1", "device2", "device3"],
+        "minimum_device_count": 2
+      }
+    },
+    "anti_patterns": ["device_to_avoid_1", "device_to_avoid_2"]
+  }
+}
+\`\`\`
+
+### 7.2 Automated Checks
+\`\`\`yaml
+content_rules:
+  - name: overall_spectrum_position
+    trigger: content_analysis
+    validation: position_within_acceptable_range
+    error: "Content tone does not match target positioning"
+
+  - name: subdimension_device_presence
+    trigger: linguistic_analysis
+    validation: minimum_devices_present_per_dimension
+    warning: "Consider using more recommended devices for [dimension]"
+
+  - name: anti_pattern_detection
+    trigger: linguistic_analysis
+    validation: no_opposite_spectrum_devices
+    error: "Detected [device] which conflicts with [position] positioning"
+
+  - name: consistency_check
+    trigger: multi_content_analysis
+    validation: tone_consistent_across_content_types
+    warning: "Tone variance detected across different content types"
+\`\`\`
+
+---
+
+## 8. Testing Criteria
+
+**Spectrum Position**
+- [ ] Overall position within acceptable range (target ±10 points)
+- [ ] Tone intensity matches intended level
+
+**Sub-Dimension Adherence**
+- [ ] Each sub-dimension demonstrates correct stance
+- [ ] Minimum 60% of recommended devices present per sub-dimension
+- [ ] Devices applied appropriately in context
+
+**Quality Checks**
+- [ ] No anti-pattern devices from opposite spectrum
+- [ ] Consistent application across all content types in scope
+- [ ] Context appropriateness score above 75%
+- [ ] User comprehension validated (if applicable)
+
+**Integration**
+- [ ] Aligns with related standards
+- [ ] Works across defined channels
+- [ ] Scalable to team implementation
+
+---
+
+## 9. Maintenance
+
+- **Review Cycle**: [FREQUENCY] (e.g., Quarterly)
+- **Trigger Events**:
+  - Major product/brand changes
+  - Audience shift
+  - Tone positioning adjustment
+  - Sub-dimension rebalancing
+- **Approval Process**: [OWNER], Content standards governance committee
+- **Communication Plan**: Share updates via team channels, update documentation
+
+---
+
+*Generated on [YYYY-MM-DD] using Tone of Voice Engine*
+*Spectrum: [SPECTRUM_NAME] | Position: [XX]/100 | Configuration: [INTENSITY] [DIRECTION]*`;
+        }
+
+        // Initial display
+        updateDisplay();
+    </script>
+</body>
+</html>
