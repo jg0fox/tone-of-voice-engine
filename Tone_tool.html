@@ -636,20 +636,20 @@
     
     <div class="spectrum-selector">
         <div class="spectrum-tabs">
-            <div class="spectrum-tab active" data-spectrum="playful-serious">Playful ↔ Serious</div>
-            <div class="spectrum-tab" data-spectrum="casual-formal">Casual ↔ Formal</div>
+            <div class="spectrum-tab active" data-spectrum="casual-formal">Casual ↔ Formal</div>
             <div class="spectrum-tab" data-spectrum="direct-indirect">Direct ↔ Indirect</div>
+            <div class="spectrum-tab" data-spectrum="playful-serious">Playful ↔ Serious</div>
             <div class="spectrum-tab" data-spectrum="warm-cool">Warm ↔ Cool</div>
             <div class="spectrum-tab" data-spectrum="confident-humble">Confident ↔ Humble</div>
         </div>
     </div>
-    
+
     <div class="spectrum-container">
         <div class="spectrum-header">
-            <div class="spectrum-title" id="current-spectrum-title">Playful vs. Serious</div>
+            <div class="spectrum-title" id="current-spectrum-title">Casual vs. Formal</div>
             <div class="spectrum-labels">
-                <span id="left-label">Playful</span>
-                <span id="right-label">Serious</span>
+                <span id="left-label">Casual</span>
+                <span id="right-label">Formal</span>
             </div>
             <div class="slider-container">
                 <input type="range" min="0" max="100" value="50" class="slider" id="main-slider">
@@ -720,9 +720,278 @@
         </div>
     </div>
 
+    <!-- 🍉 Free Palestine 🍉 -->
+
     <script>
         const deviceDefinitions = {
-            // Language Flow Devices
+            // CASUAL VS FORMAL - Vocabulary Register
+            'Everyday language': {
+                definition: 'Common, accessible words that people use in daily conversation.',
+                examples: [
+                    '"Help" instead of "assistance"',
+                    '"Fix" instead of "resolve"',
+                    '"Start" instead of "initiate"'
+                ],
+                impact: 'Creates immediate accessibility and removes barriers, makes users feel comfortable and understood.'
+            },
+            'Colloquialisms': {
+                definition: 'Informal expressions and regional language patterns familiar to target audiences.',
+                examples: [
+                    '"Heads up" instead of "please note"',
+                    '"All set" instead of "configuration complete"',
+                    '"Give it a shot" instead of "attempt this procedure"'
+                ],
+                impact: 'Builds rapport and familiarity but may confuse users from different regions or backgrounds.'
+            },
+            'Slang integration': {
+                definition: 'Contemporary informal language that reflects current cultural usage.',
+                examples: [
+                    '"Super easy" instead of "straightforward"',
+                    '"No worries" instead of "not a problem"',
+                    '"Spot on" instead of "accurate"'
+                ],
+                impact: 'Creates relevance with younger demographics but risks feeling outdated quickly.'
+            },
+            'Simple terms': {
+                definition: 'Basic vocabulary with minimal syllables and clear meanings.',
+                examples: [
+                    '"Save" instead of "preserve"',
+                    '"Get" instead of "obtain"',
+                    '"Show" instead of "display"'
+                ],
+                impact: 'Reduces cognitive load and improves comprehension across literacy levels.'
+            },
+            'Technical terminology': {
+                definition: 'Industry-specific vocabulary that demonstrates expertise and precision.',
+                examples: [
+                    '"Authentication" instead of "login"',
+                    '"Configuration" instead of "setup"',
+                    '"Implementation" instead of "rollout"'
+                ],
+                impact: 'Builds credibility with expert users but may alienate non-technical audiences.'
+            },
+            'Business language': {
+                definition: 'Corporate vocabulary that conveys professionalism and competence.',
+                examples: [
+                    '"Leverage" instead of "use"',
+                    '"Solution" instead of "fix"',
+                    '"Facilitate" instead of "help"'
+                ],
+                impact: 'Creates professional atmosphere appropriate for enterprise contexts.'
+            },
+            'Elevated vocabulary': {
+                definition: 'Sophisticated word choices that demonstrate education and refinement.',
+                examples: [
+                    '"Utilize" instead of "use"',
+                    '"Commence" instead of "start"',
+                    '"Expedite" instead of "speed up"'
+                ],
+                impact: 'Conveys expertise and quality but can create distance from users.'
+            },
+            'Latin phrases': {
+                definition: 'Traditional formal expressions that add gravitas and precision.',
+                examples: [
+                    '"Per your request" instead of "as you asked"',
+                    '"Ad hoc" instead of "as needed"',
+                    '"Status quo" instead of "current situation"'
+                ],
+                impact: 'Projects sophistication but may confuse or intimidate users.'
+            },
+
+            // Grammatical Flexibility
+            'Sentence fragments': {
+                definition: 'Incomplete sentences used for emphasis or conversational rhythm.',
+                examples: [
+                    '"Almost done."',
+                    '"Just a moment."',
+                    '"Perfect!"'
+                ],
+                impact: 'Creates natural conversation feel but may confuse non-native speakers.'
+            },
+            'Relaxed punctuation': {
+                definition: 'Flexible punctuation use that prioritizes flow over strict rules.',
+                examples: [
+                    '"Hey there, ready to get started?"',
+                    '"Upload your file, we\'ll take care of the rest"',
+                    '"Thanks - you\'re all set!"'
+                ],
+                impact: 'Feels approachable and human but may seem unprofessional in formal contexts.'
+            },
+            'Conversational grammar': {
+                definition: 'Natural speech patterns that mirror how people actually talk.',
+                examples: [
+                    '"Got questions? We\'re here to help."',
+                    '"Looking for something specific?"',
+                    '"Want to try the advanced features?"'
+                ],
+                impact: 'Creates immediate familiarity but may lack precision in complex instructions.'
+            },
+            'Proper grammar': {
+                definition: 'Strict adherence to formal grammar rules and conventions.',
+                examples: [
+                    'Correct subject-verb agreement',
+                    'Proper comma placement',
+                    'Appropriate use of subjunctive mood'
+                ],
+                impact: 'Builds credibility and trust, particularly important in professional contexts.'
+            },
+            'No contractions': {
+                definition: 'Using full word forms consistently for maximum formality.',
+                examples: [
+                    '"You will receive confirmation"',
+                    '"We cannot process this request"',
+                    '"Do not share your password"'
+                ],
+                impact: 'Creates professional distance appropriate for legal or security contexts.'
+            },
+
+            // Address Convention
+            'Direct address': {
+                definition: 'Speaking directly to the user using "you" consistently.',
+                examples: [
+                    '"You can customize your dashboard"',
+                    '"Your files are ready"',
+                    '"What would you like to do next?"'
+                ],
+                impact: 'Creates personal connection and engagement, makes users feel directly addressed.'
+            },
+            'First person plural': {
+                definition: 'Using "we" and "us" to create partnership and collaboration.',
+                examples: [
+                    '"Let\'s get started"',
+                    '"We\'ll help you set this up"',
+                    '"Together, we can solve this"'
+                ],
+                impact: 'Creates sense of collaboration and reduces user isolation in complex tasks.'
+            },
+            'Inclusive pronouns': {
+                definition: 'Using pronouns that create belonging and shared experience.',
+                examples: [
+                    '"Our community of users"',
+                    '"Your team\'s workspace"',
+                    '"Everyone\'s favorite features"'
+                ],
+                impact: 'Builds community feeling and reduces transactional nature of interactions.'
+            },
+            'Nicknames/shortcuts': {
+                definition: 'Friendly abbreviations and casual name usage.',
+                examples: [
+                    '"Hi [First name]" instead of full names',
+                    '"Your profile pic" instead of "profile photograph"',
+                    '"Docs" instead of "documents"'
+                ],
+                impact: 'Creates intimacy and familiarity but may feel too casual in professional settings.'
+            },
+            'Third person': {
+                definition: 'Referring to the user indirectly to maintain professional distance.',
+                examples: [
+                    '"Users may access their accounts"',
+                    '"The customer will receive confirmation"',
+                    '"Account holders are responsible for..."'
+                ],
+                impact: 'Creates professional objectivity but can feel impersonal and cold.'
+            },
+            'Institutional voice': {
+                definition: 'Speaking as an organization rather than individuals.',
+                examples: [
+                    '"The company reserves the right"',
+                    '"This system provides"',
+                    '"Our policy states"'
+                ],
+                impact: 'Conveys authority and stability but lacks human connection.'
+            },
+            'Titles and formality': {
+                definition: 'Using formal address patterns and professional titles.',
+                examples: [
+                    '"Dear Mr. Smith"',
+                    '"Account Administrator"',
+                    '"System User"'
+                ],
+                impact: 'Shows respect and professionalism but creates distance from users.'
+            },
+            'Passive construction': {
+                definition: 'Using passive voice to remove personal agency and create objectivity.',
+                examples: [
+                    '"The form has been submitted"',
+                    '"An error was encountered"',
+                    '"Payment will be processed"'
+                ],
+                impact: 'Creates professional neutrality but can confuse users about who\'s responsible for actions.'
+            },
+
+            // Information Density (Casual/Formal)
+            'Chunking': {
+                definition: 'Breaking information into small, manageable pieces with clear separation.',
+                examples: [
+                    '"First, upload your file. Then, choose your settings. Finally, click publish."',
+                    'Using bullet points for complex lists',
+                    'Breaking long forms into multiple steps'
+                ],
+                impact: 'Reduces cognitive overwhelm and improves task completion rates.'
+            },
+            'Single concept sentences': {
+                definition: 'Limiting each sentence to one main idea or action.',
+                examples: [
+                    '"Click the blue button. This will save your work."',
+                    '"Enter your email address. We\'ll send you a confirmation link."'
+                ],
+                impact: 'Improves comprehension and reduces errors, especially for complex tasks.'
+            },
+            'Explanatory elaboration': {
+                definition: 'Providing additional context and reasoning for actions.',
+                examples: [
+                    '"Save your work frequently to avoid losing changes"',
+                    '"We encrypt your data to keep it secure"',
+                    '"This might take a moment while we process your request"'
+                ],
+                impact: 'Builds understanding and trust but increases reading time.'
+            },
+            'Pause points': {
+                definition: 'Strategic breaks in content flow to allow processing time.',
+                examples: [
+                    'Line breaks between key concepts',
+                    '"Take a moment to review your choices"',
+                    'Progressive disclosure of information'
+                ],
+                impact: 'Improves retention and reduces cognitive load but slows task completion.'
+            },
+            'Compressed syntax': {
+                definition: 'Packing multiple concepts and actions into single sentences.',
+                examples: [
+                    '"Upload files, select processing options, and initiate batch conversion"',
+                    '"Configure account settings, team permissions, and billing preferences simultaneously"'
+                ],
+                impact: 'Maximizes information efficiency but can overwhelm less experienced users.'
+            },
+            'Assumption-heavy language': {
+                definition: 'Assuming user knowledge and skipping basic explanations.',
+                examples: [
+                    '"SSH into your server"',
+                    '"Configure your DNS settings"',
+                    '"Run the migration script"'
+                ],
+                impact: 'Speeds up expert workflows but excludes novice users.'
+            },
+            'Technical shortcuts': {
+                definition: 'Using abbreviations and technical terms to compress meaning.',
+                examples: [
+                    '"API key" instead of "Application Programming Interface authentication key"',
+                    '"DB" instead of "database"',
+                    '"UI" instead of "user interface"'
+                ],
+                impact: 'Efficient for expert users but creates barriers for beginners.'
+            },
+            'Dense information': {
+                definition: 'Presenting maximum information in minimal space.',
+                examples: [
+                    '"Status: Active | Last modified: 01/15/24 | Size: 2.3MB | Type: PDF"',
+                    'Comprehensive tables with multiple data points',
+                    'Condensed form layouts'
+                ],
+                impact: 'Provides complete information efficiently but can overwhelm scanning users.'
+            },
+
+            // Sound/Rhythm Devices (preserved for Language Flow references)
             'Assonance': {
                 definition: 'Repetition of similar vowel sounds within words to create musical quality and flow.',
                 examples: [
@@ -960,6 +1229,1125 @@
                     '"Loading content", "Error occurred", "Operation successful"'
                 ],
                 impact: 'Maximizes usability through established patterns and expectations. Users know exactly what to expect and how to respond.'
+            },
+
+            // DIRECT VS INDIRECT - Message Transparency
+            'Explicit statements': {
+                definition: 'Unambiguous declarations that leave no room for interpretation.',
+                examples: [
+                    '"You must complete all required fields"',
+                    '"This action cannot be undone"',
+                    '"Your payment failed"'
+                ],
+                impact: 'Eliminates confusion and ensures user understanding, especially in critical moments.'
+            },
+            'Binary language': {
+                definition: 'Clear yes/no, on/off, success/failure communication.',
+                examples: [
+                    '"Account activated" vs "Account activation in progress"',
+                    '"Access granted" vs "Access being processed"',
+                    '"File uploaded successfully" vs "File upload completed"'
+                ],
+                impact: 'Provides immediate clarity about system state and user actions.'
+            },
+            'Literal descriptions': {
+                definition: 'Precise, factual language without metaphorical interpretation.',
+                examples: [
+                    '"Click the red button" instead of "Hit the stop button"',
+                    '"Enter your 16-digit card number" instead of "Enter your payment details"',
+                    '"2.5GB remaining" instead of "Almost full"'
+                ],
+                impact: 'Eliminates ambiguity but may feel mechanical or cold.'
+            },
+            'Stress emphasis': {
+                definition: 'Using typographic stress to highlight critical information.',
+                examples: [
+                    '"**Required** field cannot be empty"',
+                    '"*Warning:* This action is permanent"',
+                    '"SAVE your work before continuing"'
+                ],
+                impact: 'Draws attention to important information but can feel aggressive if overused.'
+            },
+            'Implied meanings': {
+                definition: 'Suggesting outcomes or actions without explicit statements.',
+                examples: [
+                    '"You might want to save your work" instead of "Save your work now"',
+                    '"Consider reviewing your settings" instead of "Check your settings"',
+                    '"This seems important" instead of "This is critical"'
+                ],
+                impact: 'Feels less pushy but may miss users who need explicit direction.'
+            },
+            'Contextual cues': {
+                definition: 'Relying on surrounding context to convey meaning.',
+                examples: [
+                    'Color-coding to indicate status without text',
+                    'Progressive disclosure that hints at next steps',
+                    'Visual hierarchy that suggests importance'
+                ],
+                impact: 'Creates elegant experiences but may confuse users who miss visual cues.'
+            },
+            'Euphemistic language': {
+                definition: 'Softer alternatives to harsh or technical realities.',
+                examples: [
+                    '"Experiencing some difficulties" instead of "System failure"',
+                    '"Your request needs attention" instead of "Request rejected"',
+                    '"Taking longer than expected" instead of "Timed out"'
+                ],
+                impact: 'Reduces user anxiety but may obscure important information.'
+            },
+            'Intonation patterns': {
+                definition: 'Using rhythm and flow to suggest meaning and emotion.',
+                examples: [
+                    '"Hmm, something\'s not quite right here..."',
+                    '"Well, that\'s interesting..."',
+                    '"Looks like we\'re all set!"'
+                ],
+                impact: 'Creates natural conversation feel but can be ambiguous about actual system state.'
+            },
+
+            // Information Density (Direct/Indirect)
+            'Complete explanations': {
+                definition: 'Providing full context and background for every action and outcome.',
+                examples: [
+                    '"We require your email address to send account notifications, password resets, and important security updates"',
+                    '"This process will analyze your data, generate insights, and create a downloadable report, which may take 3-5 minutes"'
+                ],
+                impact: 'Ensures full understanding but increases cognitive load and reading time.'
+            },
+            'Multi-layered information': {
+                definition: 'Presenting primary message with supporting details and context.',
+                examples: [
+                    'Main message + explanation + example + link to documentation',
+                    'Status + reason + next steps + timeline',
+                    'Error + cause + solution + prevention'
+                ],
+                impact: 'Provides complete picture but can overwhelm users who just want basic information.'
+            },
+            'Preemptive answers': {
+                definition: 'Addressing likely questions before users ask them.',
+                examples: [
+                    '"Your data is encrypted (we use AES-256 encryption to protect your information)"',
+                    '"Processing time varies (typically 2-10 minutes depending on file size)"'
+                ],
+                impact: 'Reduces support burden but increases interface complexity.'
+            },
+            'Assumption clarification': {
+                definition: 'Explicitly stating what might otherwise be implied.',
+                examples: [
+                    '"When you click Save, your changes will be stored permanently"',
+                    '"This setting affects all team members in your organization"',
+                    '"Free accounts include up to 5 projects"'
+                ],
+                impact: 'Prevents misunderstandings but can feel condescending to experienced users.'
+            },
+            'Essential-only content': {
+                definition: 'Stripping away all but the most critical information.',
+                examples: [
+                    '"Save" instead of "Save your changes permanently"',
+                    '"Error" instead of detailed error explanations',
+                    '"Loading..." instead of progress descriptions'
+                ],
+                impact: 'Reduces clutter and speeds up scanning but may leave users wanting more context.'
+            },
+            'Implied knowledge': {
+                definition: 'Assuming users understand common patterns and conventions.',
+                examples: [
+                    'Using standard icons without labels',
+                    'Abbreviated instructions for common tasks',
+                    'Minimal onboarding for familiar interfaces'
+                ],
+                impact: 'Creates streamlined experience for experienced users but excludes beginners.'
+            },
+            'Progressive disclosure': {
+                definition: 'Revealing information only when specifically requested.',
+                examples: [
+                    '"Show details" links for additional information',
+                    'Expandable sections for advanced options',
+                    'Hover states that reveal context'
+                ],
+                impact: 'Keeps interface clean while preserving access to complete information.'
+            },
+            'Contextual inference': {
+                definition: 'Letting users derive meaning from context rather than explicit statements.',
+                examples: [
+                    'Color changes to indicate state',
+                    'Position changes to show progress',
+                    'Visual cues instead of text descriptions'
+                ],
+                impact: 'Creates elegant, uncluttered experience but relies on user interface literacy.'
+            },
+
+            // Instruction Approach
+            'Imperative verbs': {
+                definition: 'Direct command words that tell users exactly what to do.',
+                examples: [
+                    '"Click Save to continue"',
+                    '"Enter your password"',
+                    '"Select all applicable options"'
+                ],
+                impact: 'Provides clear direction and reduces decision paralysis, essential for task completion.'
+            },
+            'Step-by-step directives': {
+                definition: 'Sequential, numbered instructions that guide users through processes.',
+                examples: [
+                    '"1. Upload your file 2. Choose settings 3. Click process"',
+                    '"First, log in. Then, navigate to settings. Finally, update your preferences."'
+                ],
+                impact: 'Ensures task completion but can feel rigid and patronizing.'
+            },
+            'Action-oriented language': {
+                definition: 'Strong verbs that emphasize immediate action and momentum.',
+                examples: [
+                    '"Start," "Launch," "Execute," "Submit"',
+                    '"Generate report now"',
+                    '"Complete setup immediately"'
+                ],
+                impact: 'Creates urgency and momentum but may pressure users unnecessarily.'
+            },
+            'Anaphora': {
+                definition: 'Repetition of a word or phrase at the beginning of successive clauses for emphasis.',
+                examples: [
+                    '"Save your work. Save your time. Save your progress."',
+                    '"Click to upload. Click to edit. Click to share."',
+                    '"Choose your plan. Choose your features. Choose your future."'
+                ],
+                impact: 'Creates rhythm and emphasis that reinforces key actions but can feel repetitive.'
+            },
+            'Optional language': {
+                definition: 'Presenting actions as choices rather than requirements.',
+                examples: [
+                    '"You might want to save your work"',
+                    '"Consider upgrading for additional features"',
+                    '"Feel free to explore the advanced options"'
+                ],
+                impact: 'Feels respectful and non-pushy but may reduce task completion rates.'
+            },
+            'Invitation patterns': {
+                definition: 'Welcoming users to take actions rather than demanding them.',
+                examples: [
+                    '"Ready to get started?"',
+                    '"Want to try the premium features?"',
+                    '"Interested in learning more?"'
+                ],
+                impact: 'Creates positive engagement but can be less effective for critical tasks.'
+            },
+            'Gentle guidance': {
+                definition: 'Soft direction that guides without commanding.',
+                examples: [
+                    '"Here\'s what you can do next..."',
+                    '"You\'ll probably want to..."',
+                    '"Most users find it helpful to..."'
+                ],
+                impact: 'Maintains user agency but may not provide sufficient direction for complex tasks.'
+            },
+            'Conditional suggestions': {
+                definition: 'Recommendations tied to specific circumstances or user goals.',
+                examples: [
+                    '"If you\'re new to this, you might want to start with the tutorial"',
+                    '"For better security, consider enabling two-factor authentication"',
+                    '"When you\'re ready, you can proceed to the next step"'
+                ],
+                impact: 'Respects user knowledge level but requires users to self-assess their needs.'
+            },
+
+            // Assumption Level
+            'Domain expertise assumptions': {
+                definition: 'Assuming users have specialized knowledge in relevant fields.',
+                examples: [
+                    '"Configure your API endpoints"',
+                    '"Adjust the color temperature"',
+                    '"Set up your CNAME record"'
+                ],
+                impact: 'Efficient for expert users but creates barriers for beginners.'
+            },
+            'Interface familiarity': {
+                definition: 'Assuming users understand common interface patterns and conventions.',
+                examples: [
+                    'Unlabeled hamburger menu icons',
+                    'Standard form conventions without instruction',
+                    'Assumption of keyboard shortcut knowledge'
+                ],
+                impact: 'Streamlines experience for experienced users but excludes digital novices.'
+            },
+            'Process knowledge': {
+                definition: 'Assuming users understand standard workflows and procedures.',
+                examples: [
+                    '"Complete the usual verification steps"',
+                    '"Follow standard security protocols"',
+                    '"Use normal backup procedures"'
+                ],
+                impact: 'Speeds up workflows for regular users but confuses newcomers.'
+            },
+            'Cultural references': {
+                definition: 'Assuming shared cultural knowledge and context.',
+                examples: [
+                    'Business terminology without definition',
+                    'Industry-specific metaphors',
+                    'Regional expressions and idioms'
+                ],
+                impact: 'Creates connection with target audience but excludes those outside the reference group.'
+            },
+            'Contextual background': {
+                definition: 'Providing necessary background information for understanding.',
+                examples: [
+                    '"An API (Application Programming Interface) allows different software to communicate"',
+                    '"Color temperature affects how warm or cool your images appear"',
+                    '"A CNAME record redirects one domain name to another"'
+                ],
+                impact: 'Ensures comprehension across skill levels but increases content length.'
+            },
+            'Progressive education': {
+                definition: 'Teaching concepts gradually as users encounter them.',
+                examples: [
+                    'Tooltips that explain terms on hover',
+                    'Just-in-time help that appears when needed',
+                    'Contextual explanations that build on previous knowledge'
+                ],
+                impact: 'Builds user competence over time but requires careful information architecture.'
+            },
+            'Alternative pathways': {
+                definition: 'Providing multiple ways to accomplish tasks based on skill level.',
+                examples: [
+                    'Basic and advanced modes',
+                    'Guided tours alongside expert shortcuts',
+                    'Detailed and simplified view options'
+                ],
+                impact: 'Accommodates diverse user needs but increases interface complexity.'
+            },
+            'Inclusive explanations': {
+                definition: 'Describing processes and concepts without assuming prior knowledge.',
+                examples: [
+                    '"Click the menu icon (three horizontal lines) in the top right"',
+                    '"Enter your password (the secret code you created when signing up)"',
+                    '"This will sync your data (update all your devices with the latest information)"'
+                ],
+                impact: 'Ensures accessibility but can feel patronizing to experienced users.'
+            },
+
+            // PLAYFUL VS SERIOUS - Creative Expression
+            'Metaphorical language': {
+                definition: 'Comparing abstract concepts to familiar, concrete experiences.',
+                examples: [
+                    '"Your data dashboard" (comparing interface to car dashboard)',
+                    '"Navigate your workspace" (comparing UI to physical space)',
+                    '"Filter your inbox" (comparing sorting to physical filtration)'
+                ],
+                impact: 'Makes complex features understandable and memorable but can confuse if poorly chosen.'
+            },
+            'Anthropomorphism': {
+                definition: 'Giving human characteristics to system elements and processes.',
+                examples: [
+                    '"Your files are taking a quick nap"',
+                    '"The system is thinking..."',
+                    '"Your data wants to be organized"'
+                ],
+                impact: 'Creates emotional connection and reduces technical anxiety but may confuse literal-minded users.'
+            },
+            'Euphony': {
+                definition: 'Arranging words and phrases to create pleasing sounds and musical quality.',
+                examples: [
+                    '"Swift, smooth, seamless setup"',
+                    '"Craft, create, collaborate"',
+                    '"Simple, smart, secure solutions"'
+                ],
+                impact: 'Creates memorable brand moments and positive emotional associations but requires careful execution.'
+            },
+            'Functional descriptions': {
+                definition: 'Straightforward explanations of what systems and features actually do.',
+                examples: [
+                    '"Upload files to cloud storage"',
+                    '"Generate monthly analytics reports"',
+                    '"Configure user access permissions"'
+                ],
+                impact: 'Sets clear expectations and reduces confusion but lacks emotional engagement.'
+            },
+            'Standard terminology': {
+                definition: 'Using established, conventional language for consistency and clarity.',
+                examples: [
+                    '"Login" instead of "Sign in to your world"',
+                    '"Save" instead of "Capture your thoughts"',
+                    '"Delete" instead of "Say goodbye to"'
+                ],
+                impact: 'Ensures universal understanding but misses opportunities for brand differentiation.'
+            },
+            'Cacophony avoidance': {
+                definition: 'Deliberately avoiding complex sound patterns that might distract from meaning.',
+                examples: [
+                    'Choosing clarity over cleverness in word choice',
+                    'Avoiding tongue-twisters and difficult pronunciations',
+                    'Prioritizing comprehension over musical quality'
+                ],
+                impact: 'Ensures focus remains on content and function rather than form.'
+            },
+
+            // Rhythmic Quality
+            'Dynamic sentence length': {
+                definition: 'Mixing short and long sentences to create engaging rhythm and pacing.',
+                examples: [
+                    '"Save time. Automate repetitive tasks with our powerful workflow builder that connects all your favorite apps seamlessly."',
+                    '"Welcome! Let\'s get you started with a quick tour of the essential features you\'ll use every day to transform your workflow."'
+                ],
+                impact: 'Keeps users engaged through varied pacing but requires skillful execution to avoid confusion.'
+            },
+            'Alliteration': {
+                definition: 'Repetition of the same sound at the start of a series of words for rhythmic effect.',
+                examples: [
+                    '"Perfect productivity platform"',
+                    '"Simple, smart, secure setup"',
+                    '"Faster file formatting features"'
+                ],
+                impact: 'Creates memorable phrases and brand recognition but can feel forced if overused.'
+            },
+            'Tempo variation': {
+                definition: 'Alternating between rapid-fire delivery and slower, contemplative pacing.',
+                examples: [
+                    '"Upload. Edit. Share. Take your time to review the results and make any adjustments you need."',
+                    '"Quick setup, powerful results, endless possibilities await your creative exploration."'
+                ],
+                impact: 'Matches rhythm to content urgency but can confuse users if changes are too abrupt.'
+            },
+            'Uniform sentence structure': {
+                definition: 'Maintaining similar sentence length and structure throughout content.',
+                examples: [
+                    '"Complete your profile setup. Review your privacy settings. Confirm your email address. Begin using the platform."',
+                    '"Your account has been created. Your email has been verified. Your preferences have been saved."'
+                ],
+                impact: 'Creates predictable reading experience and professional tone but may feel monotonous.'
+            },
+            'Steady rhythm': {
+                definition: 'Maintaining consistent pacing and beat throughout content blocks.',
+                examples: [
+                    'Regular use of parallel structure',
+                    'Consistent clause length and complexity',
+                    'Predictable punctuation patterns'
+                ],
+                impact: 'Builds trust through consistency but may lack emotional engagement.'
+            },
+            'Measured tempo': {
+                definition: 'Controlled pacing that never rushes or drags, maintaining professional steadiness.',
+                examples: [
+                    '"Please review your account settings carefully. Make any necessary changes to your preferences. Save your updates when you are satisfied with your choices."'
+                ],
+                impact: 'Conveys reliability and professionalism but may feel slow for urgent tasks.'
+            },
+
+            // Structural Approach
+            'Unexpected information hierarchy': {
+                definition: 'Presenting information in surprising but delightful orders that break conventional patterns.',
+                examples: [
+                    'Starting with benefits before explaining features',
+                    'Leading with user quotes before product descriptions',
+                    'Putting calls-to-action at the beginning of content blocks'
+                ],
+                impact: 'Creates engagement and memorability but may confuse users expecting standard patterns.'
+            },
+            'Narrative flow': {
+                definition: 'Organizing content as a story with setup, conflict, and resolution rather than logical categories.',
+                examples: [
+                    '"Meet Sarah, she struggled with productivity until she discovered our tool..."',
+                    '"What if you could transform your workflow in just five minutes?"',
+                    '"The journey from chaos to clarity starts with one simple step..."'
+                ],
+                impact: 'Creates emotional engagement and memorability but may obscure functional information.'
+            },
+            'Interrupt patterns': {
+                definition: 'Breaking expected content flow with surprising asides, questions, or revelations.',
+                examples: [
+                    '"Configure your settings... (Oh, and did you know you can customize the colors too?)"',
+                    '"Step 3: Upload your files... Wait, let\'s make this even easier with drag-and-drop!"'
+                ],
+                impact: 'Maintains engagement and adds personality but can disrupt task completion.'
+            },
+            'Creative sectioning': {
+                definition: 'Using unconventional organizational patterns that surprise and delight.',
+                examples: [
+                    'Organizing by user emotions rather than features',
+                    'Using metaphorical categories (e.g., "Launch pad," "Mission control," "Landing zone")',
+                    'Mixing different content types unexpectedly'
+                ],
+                impact: 'Creates memorable brand experience but may reduce scanability and findability.'
+            },
+            'Logical information architecture': {
+                definition: 'Organizing content in predictable, systematic patterns that users expect.',
+                examples: [
+                    'Most important information first',
+                    'General to specific organization',
+                    'Problem → Solution → Implementation structure'
+                ],
+                impact: 'Ensures users can find information efficiently but may feel predictable and boring.'
+            },
+            'Conventional presentation patterns': {
+                definition: 'Using established, familiar layouts that users recognize immediately.',
+                examples: [
+                    'Standard form layouts with labels above fields',
+                    'Traditional navigation patterns (header, sidebar, footer)',
+                    'Expected button placement and hierarchy'
+                ],
+                impact: 'Reduces cognitive load and learning time but misses opportunities for differentiation.'
+            },
+            'Systematic organization': {
+                definition: 'Clear, consistent principles governing how all content is structured.',
+                examples: [
+                    'Alphabetical ordering for lists',
+                    'Chronological organization for processes',
+                    'Importance-based hierarchy for features'
+                ],
+                impact: 'Creates predictable, efficient user experience but may feel rigid and uninspiring.'
+            },
+
+            // Information Density (Playful/Serious)
+            'Elaborative details': {
+                definition: 'Including extra context, examples, and explanatory information beyond the minimum required.',
+                examples: [
+                    '"Save your work (we\'ll store it safely in the cloud so you never lose your progress)"',
+                    '"Upload your photo (JPG, PNG, or GIF files work best - make sure it shows your smiling face!)"'
+                ],
+                impact: 'Reduces anxiety and builds understanding but increases reading time and cognitive load.'
+            },
+            'Breathing room': {
+                definition: 'Providing ample white space and time for users to process information.',
+                examples: [
+                    'Single concepts per screen or section',
+                    'Generous spacing between interactive elements',
+                    'Pause points in multi-step processes'
+                ],
+                impact: 'Reduces overwhelm and improves comprehension but slows down efficient task completion.'
+            },
+            'Contextual storytelling': {
+                definition: 'Embedding information within narrative context and real-world examples.',
+                examples: [
+                    '"Imagine you\'re preparing for an important presentation..." (before explaining presentation features)',
+                    '"Sarah from marketing uses this feature to..." (when explaining use cases)'
+                ],
+                impact: 'Makes features relatable and memorable but adds content length and complexity.'
+            },
+            'Redundant reinforcement': {
+                definition: 'Presenting the same information multiple ways to ensure understanding.',
+                examples: [
+                    'Text + icons + examples for key concepts',
+                    'Multiple ways to access the same feature',
+                    'Confirmation and summary messages'
+                ],
+                impact: 'Improves learning and retention but can feel condescending to experienced users.'
+            },
+            'Dense information packaging': {
+                definition: 'Presenting maximum information in minimal space without sacrificing clarity.',
+                examples: [
+                    '"Status: Active | Modified: 01/15/24 | Size: 2.3MB | Type: PDF | Shared: No"',
+                    'Comprehensive tables with sortable columns',
+                    'Multi-layered navigation menus'
+                ],
+                impact: 'Provides complete information efficiently but can overwhelm users who need to scan quickly.'
+            },
+            'Minimal exposition': {
+                definition: 'Stripping away explanatory text to focus on essential actions and information.',
+                examples: [
+                    '"Save" instead of "Save your document to prevent loss"',
+                    '"Login required" instead of explanations about why login is needed',
+                    'Form labels without instructional text'
+                ],
+                impact: 'Speeds up task completion for experienced users but may confuse beginners.'
+            },
+            'Compressed communication': {
+                definition: 'Using abbreviations, technical terms, and assumed knowledge to convey more in fewer words.',
+                examples: [
+                    '"DB connection failed" instead of "Database connection failed"',
+                    '"Auth required" instead of "Authentication required"',
+                    '"Config updated" instead of "Configuration updated"'
+                ],
+                impact: 'Efficient for expert users but creates barriers for less technical audiences.'
+            },
+            'Assumption-heavy shortcuts': {
+                definition: 'Relying on user knowledge to fill in gaps in information.',
+                examples: [
+                    'Icons without labels',
+                    'Abbreviated instructions for complex processes',
+                    'Contextual menus without explanatory text'
+                ],
+                impact: 'Creates streamlined interface for power users but excludes those without domain expertise.'
+            },
+
+            // WARM VS COOL - Emotional Vocabulary
+            'Emotion acknowledgment': {
+                definition: 'Recognizing and validating the emotional states users might experience.',
+                examples: [
+                    '"We know this can be frustrating..."',
+                    '"You\'re probably excited to get started!"',
+                    '"It\'s normal to feel overwhelmed at first"'
+                ],
+                impact: 'Creates emotional connection and reduces user anxiety but may feel presumptuous if misapplied.'
+            },
+            'Empathetic language': {
+                definition: 'Using words that demonstrate understanding of user feelings and perspectives.',
+                examples: [
+                    '"We understand how important your data is to you"',
+                    '"This must be disappointing"',
+                    '"You deserve a better experience"'
+                ],
+                impact: 'Builds trust and loyalty through emotional connection but requires genuine authenticity.'
+            },
+            'Celebratory expressions': {
+                definition: 'Acknowledging user achievements and milestones with enthusiasm.',
+                examples: [
+                    '"Congratulations! You\'ve completed your first project!"',
+                    '"Amazing work! You\'re making great progress!"',
+                    '"Well done! Your team will love this!"'
+                ],
+                impact: 'Creates positive associations and motivation but can feel forced if overused.'
+            },
+            'Comfort language': {
+                definition: 'Using words and phrases that provide reassurance and emotional safety.',
+                examples: [
+                    '"Don\'t worry, we\'ve got you covered"',
+                    '"Take your time, there\'s no rush"',
+                    '"Everything will be okay"'
+                ],
+                impact: 'Reduces anxiety and builds confidence but may seem unprofessional in some contexts.'
+            },
+            'Clinical terminology': {
+                definition: 'Objective, medical or scientific language that removes emotional coloring.',
+                examples: [
+                    '"Process completed" instead of "Great job!"',
+                    '"Error detected" instead of "Oops, something went wrong"',
+                    '"Status updated" instead of "Exciting news!"'
+                ],
+                impact: 'Conveys professionalism and objectivity but may feel cold and disconnected.'
+            },
+            'Factual reporting': {
+                definition: 'Presenting information without emotional interpretation or coloring.',
+                examples: [
+                    '"5 items selected for deletion"',
+                    '"Upload completed at 14:32"',
+                    '"System maintenance scheduled for Sunday"'
+                ],
+                impact: 'Provides clear, unbiased information but lacks emotional engagement.'
+            },
+            'Procedural language': {
+                definition: 'Step-by-step, process-focused communication without emotional elements.',
+                examples: [
+                    '"Complete field validation before submission"',
+                    '"Execute backup procedure according to protocol"',
+                    '"Follow standard authentication workflow"'
+                ],
+                impact: 'Ensures clarity and consistency but may feel robotic and impersonal.'
+            },
+            'Objective descriptions': {
+                definition: 'Neutral, balanced language that avoids positive or negative emotional loading.',
+                examples: [
+                    '"Feature available" instead of "Exciting new feature!"',
+                    '"Payment processed" instead of "Payment successfully completed!"',
+                    '"Account closed" instead of "Sorry to see you go"'
+                ],
+                impact: 'Maintains professional neutrality but may miss opportunities for positive user experience.'
+            },
+
+            // Relational Positioning
+            'Partnership language': {
+                definition: 'Using "we" and "us" to create a sense of collaboration and shared goals.',
+                examples: [
+                    '"Let\'s work together to solve this"',
+                    '"We\'ll help you every step of the way"',
+                    '"Together, we can achieve your goals"'
+                ],
+                impact: 'Creates sense of collaboration and support but may feel forced if not genuine.'
+            },
+            'Community references': {
+                definition: 'Acknowledging the broader user community and shared experiences.',
+                examples: [
+                    '"Join thousands of users who love this feature"',
+                    '"Our community has suggested..."',
+                    '"Like many of our users, you might find..."'
+                ],
+                impact: 'Creates belonging and social proof but may pressure users who prefer individual experiences.'
+            },
+            'Collective pronouns': {
+                definition: 'Using inclusive language that brings users into the organizational family.',
+                examples: [
+                    '"Our shared workspace"',
+                    '"Your team\'s success is our success"',
+                    '"We\'re all in this together"'
+                ],
+                impact: 'Builds loyalty and emotional investment but may feel presumptuous about user relationships.'
+            },
+            'Shared experience framing': {
+                definition: 'Presenting interactions as mutual experiences rather than service transactions.',
+                examples: [
+                    '"We\'re excited to learn more about your project"',
+                    '"Your feedback helps us grow together"',
+                    '"We\'re on this journey with you"'
+                ],
+                impact: 'Creates emotional bond and mutual investment but requires authentic organizational culture.'
+            },
+            'Service provider positioning': {
+                definition: 'Maintaining clear boundaries between provider and customer roles.',
+                examples: [
+                    '"Our system provides..."',
+                    '"This service includes..."',
+                    '"Your account allows..."'
+                ],
+                impact: 'Sets clear expectations and professional boundaries but may feel distant and commercial.'
+            },
+            'Customer-vendor language': {
+                definition: 'Using formal business relationship terminology.',
+                examples: [
+                    '"Purchase confirmation"',
+                    '"Service agreement"',
+                    '"Customer support"'
+                ],
+                impact: 'Conveys professionalism and reliability but lacks emotional connection.'
+            },
+            'Functional relationship': {
+                definition: 'Focusing on what the system does rather than emotional connection.',
+                examples: [
+                    '"Platform capabilities include..."',
+                    '"System requirements are..."',
+                    '"Available functions are..."'
+                ],
+                impact: 'Efficiently communicates capabilities but misses opportunities for emotional engagement.'
+            },
+
+            // Empathy Expression
+            'Struggle recognition': {
+                definition: 'Acknowledging the challenges and difficulties users face.',
+                examples: [
+                    '"We know managing multiple projects can be overwhelming"',
+                    '"File organization doesn\'t have to be a headache"',
+                    '"You shouldn\'t have to struggle with complicated software"'
+                ],
+                impact: 'Creates emotional connection and positions product as solution but may emphasize negative experiences.'
+            },
+            'Validation language': {
+                definition: 'Confirming that user feelings and experiences are normal and understandable.',
+                examples: [
+                    '"Your concerns are completely valid"',
+                    '"It\'s natural to feel uncertain about this"',
+                    '"Many users feel the same way"'
+                ],
+                impact: 'Reduces user anxiety and self-doubt but requires careful application to avoid patronizing tone.'
+            },
+            'Encouraging affirmations': {
+                definition: 'Providing positive reinforcement and confidence-building language.',
+                examples: [
+                    '"You\'re doing great!"',
+                    '"You\'ve got this!"',
+                    '"You\'re making excellent progress!"'
+                ],
+                impact: 'Builds user confidence and motivation but can feel artificial if not earned.'
+            },
+            'Problem-solving partnership': {
+                definition: 'Positioning the organization as an ally in solving user challenges.',
+                examples: [
+                    '"We\'ll figure this out together"',
+                    '"Let\'s solve this step by step"',
+                    '"We\'re here to help you succeed"'
+                ],
+                impact: 'Creates strong emotional bond and trust but requires consistent follow-through.'
+            },
+            'Objective problem-solving': {
+                definition: 'Focusing on solutions without acknowledging emotional impact.',
+                examples: [
+                    '"Issue resolution requires the following steps"',
+                    '"Problem can be addressed through configuration changes"',
+                    '"Error correction involves updating settings"'
+                ],
+                impact: 'Provides clear path forward without emotional distraction but may feel cold during frustrating moments.'
+            },
+            'Solution-focused communication': {
+                definition: 'Immediately moving to fixes without dwelling on problems or feelings.',
+                examples: [
+                    '"To resolve this: 1) Update your browser 2) Clear your cache 3) Try again"',
+                    '"Alternative approach: Use the mobile app instead"',
+                    '"Workaround available: Export data manually"'
+                ],
+                impact: 'Efficiently addresses user needs but may miss opportunities to build emotional connection.'
+            },
+            'Professional boundaries': {
+                definition: 'Maintaining appropriate distance while still being helpful.',
+                examples: [
+                    '"Technical support can assist with configuration"',
+                    '"Documentation provides detailed instructions"',
+                    '"Help desk hours are 9AM-5PM Monday through Friday"'
+                ],
+                impact: 'Sets clear expectations and maintains professionalism but may feel bureaucratic.'
+            },
+            'Functional focus': {
+                definition: 'Emphasizing system capabilities and user actions rather than emotional states.',
+                examples: [
+                    '"System allows multiple file formats"',
+                    '"Interface provides sorting options"',
+                    '"Platform supports team collaboration"'
+                ],
+                impact: 'Clearly communicates capabilities but lacks emotional engagement and empathy.'
+            },
+
+            // Supportive Framing
+            'Achievement celebration': {
+                definition: 'Recognizing and applauding user accomplishments, both big and small.',
+                examples: [
+                    '"Fantastic! You\'ve completed your first automation!"',
+                    '"Way to go! Your presentation looks amazing!"',
+                    '"Incredible progress! You\'re becoming a power user!"'
+                ],
+                impact: 'Creates positive reinforcement and motivation but can feel excessive if overused.'
+            },
+            'Progress acknowledgment': {
+                definition: 'Recognizing effort and improvement, even when goals aren\'t fully achieved.',
+                examples: [
+                    '"You\'re making steady progress"',
+                    '"Every step forward counts"',
+                    '"You\'re learning quickly"'
+                ],
+                impact: 'Maintains motivation during challenging tasks but requires authentic assessment of actual progress.'
+            },
+            'Confidence building': {
+                definition: 'Language that reinforces user capability and potential for success.',
+                examples: [
+                    '"You have everything you need to succeed"',
+                    '"You\'re more capable than you think"',
+                    '"This is easier than it looks"'
+                ],
+                impact: 'Reduces user anxiety and increases task completion but must be backed by good UX design.'
+            },
+            'Future-focused optimism': {
+                definition: 'Framing current actions in terms of positive future outcomes.',
+                examples: [
+                    '"This setup will save you hours later"',
+                    '"You\'ll love how organized this makes everything"',
+                    '"Your future self will thank you"'
+                ],
+                impact: 'Motivates users through immediate tasks but risks disappointment if outcomes don\'t match promises.'
+            },
+            'Status reporting': {
+                definition: 'Factual updates about system state and user progress without emotional coloring.',
+                examples: [
+                    '"Task completed"',
+                    '"3 of 5 steps remaining"',
+                    '"File uploaded successfully"'
+                ],
+                impact: 'Provides clear information without bias but misses opportunities for positive reinforcement.'
+            },
+            'Objective feedback': {
+                definition: 'Performance information presented without positive or negative interpretation.',
+                examples: [
+                    '"Response time: 2.3 seconds"',
+                    '"Storage used: 67% of available space"',
+                    '"Last backup: January 15, 2024"'
+                ],
+                impact: 'Enables informed decision-making but lacks motivational value.'
+            },
+            'Matter-of-fact delivery': {
+                definition: 'Straightforward communication without emotional enhancement or interpretation.',
+                examples: [
+                    '"Account settings updated"',
+                    '"Notification preferences saved"',
+                    '"Password changed"'
+                ],
+                impact: 'Efficient and clear but may feel robotic and impersonal.'
+            },
+            'Balanced perspectives': {
+                definition: 'Presenting both positive and negative aspects without favoring either.',
+                examples: [
+                    '"Feature includes advanced options but requires additional setup"',
+                    '"Premium plan offers more storage but costs $10/month"',
+                    '"Automation saves time but requires initial configuration"'
+                ],
+                impact: 'Enables informed decision-making but may reduce enthusiasm and commitment.'
+            },
+
+            // CONFIDENT VS HUMBLE - Certainty Language
+            'Absolute statements': {
+                definition: 'Unqualified declarations that express complete certainty without conditions.',
+                examples: [
+                    '"This will improve your productivity"',
+                    '"You will see results immediately"',
+                    '"It\'s the best solution available"'
+                ],
+                impact: 'Projects strong conviction and builds user confidence but leaves no room for nuance or failure.'
+            },
+            'Unhedged assertions': {
+                definition: 'Claims stated as fact without softening language or qualifications.',
+                examples: [
+                    '"This is effective"',
+                    '"Users love this feature"',
+                    '"It delivers outstanding results"'
+                ],
+                impact: 'Creates strong impression and clarity but can seem overconfident or inflexible.'
+            },
+            'Guarantee language': {
+                definition: 'Promises of specific outcomes without conditions or disclaimers.',
+                examples: [
+                    '"Guaranteed to work"',
+                    '"100% satisfaction assured"',
+                    '"Instant results every time"'
+                ],
+                impact: 'Builds user confidence and reduces risk perception but creates high expectations that must be met.'
+            },
+            'Superlative expressions': {
+                definition: 'Using extreme positive language that positions offerings as the ultimate choice.',
+                examples: [
+                    '"The fastest," "the best," "the most advanced"',
+                    '"Revolutionary breakthrough"',
+                    '"Unmatched performance"'
+                ],
+                impact: 'Creates excitement and differentiation but risks seeming exaggerated or unrealistic.'
+            },
+            'Conditional statements': {
+                definition: 'Assertions with "if" clauses or conditions that acknowledge limitations.',
+                examples: [
+                    '"This may improve your productivity if used consistently"',
+                    '"You might see results, depending on your specific situation"',
+                    '"It could be a good solution for your needs"'
+                ],
+                impact: 'Manages expectations and shows honesty but may reduce user confidence and commitment.'
+            },
+            'Hedged language': {
+                definition: 'Using qualifying words that soften claims and acknowledge uncertainty.',
+                examples: [
+                    '"This appears to be effective"',
+                    '"Users seem to appreciate this feature"',
+                    '"It tends to deliver good results"'
+                ],
+                impact: 'Shows intellectual honesty and careful consideration but may project lack of confidence.'
+            },
+            'Probability expressions': {
+                definition: 'Acknowledging that outcomes may vary and results are not guaranteed.',
+                examples: [
+                    '"Likely to work for most users"',
+                    '"Probable improvement in efficiency"',
+                    '"Good chance of success"'
+                ],
+                impact: 'Sets realistic expectations but may discourage users who want certainty.'
+            },
+            'Modest positioning': {
+                definition: 'Avoiding extreme claims and positioning offerings as good but not perfect.',
+                examples: [
+                    '"A solid choice," "quite effective," "generally helpful"',
+                    '"Among the better options"',
+                    '"Reasonably priced solution"'
+                ],
+                impact: 'Builds trust through honesty but may seem less exciting than competitors.'
+            },
+
+            // Authority Stance
+            'Directive guidance': {
+                definition: 'Clear, authoritative instructions that position the organization as the expert.',
+                examples: [
+                    '"You should configure your settings this way"',
+                    '"The best practice is to..."',
+                    '"We recommend following this approach"'
+                ],
+                impact: 'Provides clear direction and builds trust in expertise but may alienate users who prefer choice.'
+            },
+            'Authoritative positioning': {
+                definition: 'Establishing credibility through demonstrated knowledge and experience.',
+                examples: [
+                    '"Based on our research with thousands of users..."',
+                    '"Our team of experts has determined..."',
+                    '"Industry best practices show..."'
+                ],
+                impact: 'Builds confidence in recommendations but may feel condescending or presumptuous.'
+            },
+            'Expert knowledge display': {
+                definition: 'Demonstrating deep understanding through detailed, technical explanations.',
+                examples: [
+                    '"The algorithm uses machine learning to analyze patterns"',
+                    '"Our infrastructure includes redundant failover systems"',
+                    '"The security protocol implements end-to-end encryption"'
+                ],
+                impact: 'Establishes credibility with technical audiences but may overwhelm or exclude non-experts.'
+            },
+            'Confident recommendations': {
+                definition: 'Strong suggestions based on professional judgment and experience.',
+                examples: [
+                    '"You need to upgrade your security settings"',
+                    '"This is exactly what your business requires"',
+                    '"The solution is clear: automate this process"'
+                ],
+                impact: 'Provides decisive guidance but may pressure users or oversimplify complex situations.'
+            },
+            'Learning-together approach': {
+                definition: 'Positioning interactions as mutual discovery rather than expert instruction.',
+                examples: [
+                    '"Let\'s explore this together"',
+                    '"We\'re always learning from our users"',
+                    '"Your experience might be different from ours"'
+                ],
+                impact: 'Creates partnership feeling and encourages experimentation but may seem less authoritative.'
+            },
+            'User agency emphasis': {
+                definition: 'Empowering users to make their own decisions based on their unique circumstances.',
+                examples: [
+                    '"You know your needs best"',
+                    '"Choose the option that feels right for you"',
+                    '"You\'re the expert on your own workflow"'
+                ],
+                impact: 'Respects user autonomy and builds confidence but may leave users wanting more guidance.'
+            },
+            'Collaborative language': {
+                definition: 'Using inclusive pronouns and shared responsibility for outcomes.',
+                examples: [
+                    '"We can work together to find a solution"',
+                    '"Let\'s figure out what works for your situation"',
+                    '"How can we help you achieve your goals?"'
+                ],
+                impact: 'Creates partnership and shared investment but may dilute accountability and direction.'
+            },
+            'Question-based guidance': {
+                definition: 'Using questions to help users discover solutions rather than providing direct answers.',
+                examples: [
+                    '"What matters most to you in this decision?"',
+                    '"How do you typically handle this type of task?"',
+                    '"What would success look like for your team?"'
+                ],
+                impact: 'Encourages thoughtful decision-making but requires more cognitive effort from users.'
+            },
+
+            // Fallibility Acknowledgment
+            'Seamless experience promises': {
+                definition: 'Positioning the product as reliable and free from significant problems.',
+                examples: [
+                    '"Effortless setup and operation"',
+                    '"Smooth, uninterrupted workflow"',
+                    '"Hassle-free experience from start to finish"'
+                ],
+                impact: 'Builds confidence and reduces anxiety but sets high expectations that may not be met.'
+            },
+            'Problem-free positioning': {
+                definition: 'Focusing on capabilities without acknowledging potential limitations or failures.',
+                examples: [
+                    '"Works perfectly every time"',
+                    '"Never worry about data loss again"',
+                    '"Complete peace of mind"'
+                ],
+                impact: 'Creates strong value proposition but may disappoint users when issues inevitably arise.'
+            },
+            'System reliability emphasis': {
+                definition: 'Highlighting uptime, consistency, and dependability without mentioning potential failures.',
+                examples: [
+                    '"99.99% uptime guarantee"',
+                    '"Rock-solid performance"',
+                    '"Always available when you need it"'
+                ],
+                impact: 'Builds trust and confidence but may seem dishonest if users experience problems.'
+            },
+            'Confidence in solutions': {
+                definition: 'Presenting fixes and features as complete answers without acknowledging edge cases.',
+                examples: [
+                    '"This solves your problem completely"',
+                    '"No more worries about data security"',
+                    '"All your needs are covered"'
+                ],
+                impact: 'Creates strong reassurance but may oversimplify complex situations.'
+            },
+            'Limitation acknowledgment': {
+                definition: 'Honestly discussing what the product cannot do or where it might fall short.',
+                examples: [
+                    '"This feature works best for teams under 50 people"',
+                    '"Some advanced users may need additional tools"',
+                    '"This approach isn\'t right for every situation"'
+                ],
+                impact: 'Builds trust through honesty but may discourage potential users or reduce enthusiasm.'
+            },
+            'Work-in-progress transparency': {
+                definition: 'Acknowledging that the product is continuously improving and currently has limitations.',
+                examples: [
+                    '"We\'re constantly working to improve this feature"',
+                    '"This is a beta version - your feedback helps us improve"',
+                    '"Some functionality is still in development"'
+                ],
+                impact: 'Sets appropriate expectations and invites user participation but may reduce confidence.'
+            },
+            'Error possibility mention': {
+                definition: 'Acknowledging that problems can occur and providing context for handling them.',
+                examples: [
+                    '"If you encounter any issues, here\'s how to get help"',
+                    '"Occasionally, you might need to refresh the page"',
+                    '"Some users experience delays during peak hours"'
+                ],
+                impact: 'Prepares users for potential problems but may create anxiety or reduce confidence.'
+            },
+            'Learning from mistakes': {
+                definition: 'Openly discussing how problems have led to improvements and better solutions.',
+                examples: [
+                    '"User feedback helped us fix this issue"',
+                    '"We learned from early problems and redesigned this feature"',
+                    '"Past challenges taught us to..."'
+                ],
+                impact: 'Demonstrates growth mindset and responsiveness but may highlight past failures.'
+            },
+
+            // Structural Approach
+            'Unconventional organization': {
+                definition: 'Using surprising but purposeful information architecture that breaks expected patterns.',
+                examples: [
+                    'Leading with user outcomes before explaining features',
+                    'Organizing by user emotions rather than product categories',
+                    'Breaking traditional form layouts for better flow'
+                ],
+                impact: 'Creates memorable experiences and demonstrates innovation but may confuse users expecting standard patterns.'
+            },
+            'Risk-taking presentation': {
+                definition: 'Choosing layouts and flows that prioritize impact over safety and familiarity.',
+                examples: [
+                    'Single-column layouts that force focus',
+                    'Minimal navigation that requires user commitment',
+                    'Unconventional color schemes that break industry norms'
+                ],
+                impact: 'Creates strong brand differentiation but may alienate users who prefer familiar interfaces.'
+            },
+            'Innovation emphasis': {
+                definition: 'Structuring content to highlight new approaches and cutting-edge solutions.',
+                examples: [
+                    '"Revolutionary new way to..." headlines',
+                    'Feature comparisons that position offering as breakthrough',
+                    'Future-focused organization that emphasizes what\'s coming'
+                ],
+                impact: 'Attracts early adopters and creates excitement but may overwhelm conservative users.'
+            },
+            'Disruptive patterns': {
+                definition: 'Deliberately breaking conventional interface patterns to create new user behaviors.',
+                examples: [
+                    'Non-standard navigation patterns',
+                    'Unexpected interaction models',
+                    'Revolutionary workflow designs'
+                ],
+                impact: 'Can create powerful user experiences but requires careful testing and may have high learning curves.'
+            },
+            'Standard layouts': {
+                definition: 'Using familiar, proven interface patterns that users recognize immediately.',
+                examples: [
+                    'Traditional header/navigation/content/footer structure',
+                    'Standard form layouts with labels above fields',
+                    'Conventional button placement and hierarchy'
+                ],
+                impact: 'Reduces learning time and cognitive load but may feel predictable and undifferentiated.'
+            },
+            'Familiar patterns': {
+                definition: 'Following established conventions that users have learned from other interfaces.',
+                examples: [
+                    'Standard icons for common actions',
+                    'Conventional color meanings (red for errors, green for success)',
+                    'Expected keyboard shortcuts and interaction patterns'
+                ],
+                impact: 'Leverages user\'s existing knowledge but may seem unoriginal or behind the times.'
+            },
+            'Safe design choices': {
+                definition: 'Selecting proven approaches that minimize risk of user confusion or rejection.',
+                examples: [
+                    'Conservative color palettes',
+                    'Standard typography hierarchies',
+                    'Proven information architecture patterns'
+                ],
+                impact: 'Ensures broad usability and acceptance but may lack distinctive personality.'
+            },
+            'Industry-standard approaches': {
+                definition: 'Following established patterns within specific industries or use cases.',
+                examples: [
+                    'E-commerce checkout flows that match user expectations',
+                    'SaaS onboarding patterns that users recognize',
+                    'Business dashboard layouts that follow conventions'
+                ],
+                impact: 'Meets user expectations and reduces training time but may seem derivative or unimaginative.'
             }
         };
 
@@ -969,40 +2357,40 @@
                 leftLabel: 'Playful',
                 rightLabel: 'Serious',
                 dimensions: {
-                    fluidity: {
-                        title: 'Language flow',
-                        leftLabel: 'Fluid',
-                        rightLabel: 'Rigid',
+                    creativity: {
+                        title: 'Creative Expression',
+                        leftLabel: 'Imaginative',
+                        rightLabel: 'Literal',
                         devices: {
-                            left: ['Assonance', 'Consonance', 'Smooth transitions', 'Contractions', 'Run-on sentences'],
-                            right: ['Formal punctuation', 'Complete sentences', 'Structured syntax', 'No contractions', 'Precise grammar']
-                        }
-                    },
-                    energy: {
-                        title: 'Energy level',
-                        leftLabel: 'Lighthearted',
-                        rightLabel: 'Earnest',
-                        devices: {
-                            left: ['Exclamation points', 'Informal interjections', 'Humor', 'Metaphors', 'Wordplay'],
-                            right: ['Measured tone', 'Factual statements', 'Professional language', 'Subdued punctuation', 'Technical precision']
+                            left: ['Metaphorical language', 'Wordplay', 'Anthropomorphism', 'Euphony'],
+                            right: ['Technical precision', 'Functional descriptions', 'Standard terminology', 'Cacophony avoidance']
                         }
                     },
                     rhythm: {
                         title: 'Rhythmic Quality',
-                        leftLabel: 'Bouncy',
-                        rightLabel: 'Measured',
+                        leftLabel: 'Varied',
+                        rightLabel: 'Consistent',
                         devices: {
-                            left: ['Varied sentence length', 'Staccato rhythm', 'Quick tempo', 'Short bursts', 'Conversational pace'],
-                            right: ['Consistent rhythm', 'Longer sentences', 'Steady tempo', 'Formal cadence', 'Deliberate pacing']
+                            left: ['Dynamic sentence length', 'Alliteration', 'Tempo variation', 'Assonance'],
+                            right: ['Uniform sentence structure', 'Steady rhythm', 'Measured tempo', 'Consonance']
                         }
                     },
-                    creativity: {
-                        title: 'Creative Expression',
-                        leftLabel: 'Imaginative',
-                        rightLabel: 'Conventional',
+                    structure: {
+                        title: 'Structural Approach',
+                        leftLabel: 'Non-linear',
+                        rightLabel: 'Hierarchical',
                         devices: {
-                            left: ['Unique metaphors', 'Creative wordplay', 'Unexpected comparisons', 'Inventive language', 'Novel expressions'],
-                            right: ['Standard metaphors', 'Conventional language', 'Expected comparisons', 'Traditional phrasing', 'Established expressions']
+                            left: ['Unexpected information hierarchy', 'Narrative flow', 'Interrupt patterns', 'Creative sectioning'],
+                            right: ['Logical information architecture', 'Conventional presentation patterns', 'Systematic organization', 'Progressive disclosure']
+                        }
+                    },
+                    density: {
+                        title: 'Information Density',
+                        leftLabel: 'Spacious',
+                        rightLabel: 'Concentrated',
+                        devices: {
+                            left: ['Elaborative details', 'Breathing room', 'Contextual storytelling', 'Redundant reinforcement'],
+                            right: ['Dense information packaging', 'Minimal exposition', 'Compressed communication', 'Assumption-heavy shortcuts']
                         }
                     }
                 }
@@ -1013,39 +2401,39 @@
                 rightLabel: 'Formal',
                 dimensions: {
                     vocabulary: {
-                        title: 'Word Choice',
+                        title: 'Vocabulary Register',
                         leftLabel: 'Conversational',
                         rightLabel: 'Professional',
                         devices: {
-                            left: ['Contractions', 'Colloquialisms', 'Simple words', 'Everyday language', 'Slang when appropriate'],
-                            right: ['Full forms', 'Technical terms', 'Latinate vocabulary', 'Industry jargon', 'Precise terminology']
+                            left: ['Everyday language', 'Colloquialisms', 'Slang integration', 'Simple terms'],
+                            right: ['Technical terminology', 'Business language', 'Elevated vocabulary', 'Latin phrases']
                         }
                     },
                     structure: {
-                        title: 'Sentence Structure',
+                        title: 'Grammatical Flexibility',
                         leftLabel: 'Relaxed',
                         rightLabel: 'Structured',
                         devices: {
-                            left: ['Fragment sentences', 'Loose syntax', 'Conversational flow', 'Interrupted thoughts', 'Stream of consciousness'],
-                            right: ['Complete sentences', 'Parallel structure', 'Formal grammar', 'Complex syntax', 'Organized flow']
+                            left: ['Contractions', 'Sentence fragments', 'Relaxed punctuation', 'Conversational grammar'],
+                            right: ['Complete sentences', 'Proper grammar', 'No contractions', 'Formal punctuation']
                         }
                     },
                     address: {
-                        title: 'Reader Relationship',
-                        leftLabel: 'Familiar',
-                        rightLabel: 'Respectful Distance',
+                        title: 'Address Convention',
+                        leftLabel: 'Personal',
+                        rightLabel: 'Distant',
                         devices: {
-                            left: ['Direct "you"', 'Personal examples', 'Shared experiences', 'Inclusive "we"', 'Friendly tone'],
-                            right: ['Third person', 'Professional examples', 'Objective stance', 'Formal address', 'Institutional voice']
+                            left: ['Direct address', 'First person plural', 'Inclusive pronouns', 'Nicknames/shortcuts'],
+                            right: ['Third person', 'Institutional voice', 'Titles and formality', 'Passive construction']
                         }
                     },
-                    punctuation: {
-                        title: 'Punctuation Style',
-                        leftLabel: 'Expressive',
-                        rightLabel: 'Conservative',
+                    density: {
+                        title: 'Information Density',
+                        leftLabel: 'Digestible',
+                        rightLabel: 'Efficient',
                         devices: {
-                            left: ['Ellipses for pause', 'Em dashes for emphasis', 'Exclamation points', 'Question marks for engagement', 'Parenthetical asides'],
-                            right: ['Standard periods', 'Semicolons', 'Colons for precision', 'Minimal exclamation', 'Formal comma usage']
+                            left: ['Chunking', 'Single concept sentences', 'Explanatory elaboration', 'Pause points'],
+                            right: ['Compressed syntax', 'Assumption-heavy language', 'Technical shortcuts', 'Dense information']
                         }
                     }
                 }
@@ -1055,40 +2443,40 @@
                 leftLabel: 'Direct',
                 rightLabel: 'Indirect',
                 dimensions: {
-                    explicitness: {
-                        title: 'Clarity Level',
-                        leftLabel: 'Explicit',
+                    transparency: {
+                        title: 'Message Transparency',
+                        leftLabel: 'Clear',
                         rightLabel: 'Subtle',
                         devices: {
-                            left: ['Clear statements', 'Specific language', 'Concrete examples', 'Definitive terms', 'Unambiguous words'],
-                            right: ['Implied meaning', 'Abstract language', 'Metaphorical examples', 'Suggestive terms', 'Layered meaning']
+                            left: ['Explicit statements', 'Binary language', 'Literal descriptions', 'Stress emphasis'],
+                            right: ['Implied meanings', 'Contextual cues', 'Euphemistic language', 'Intonation patterns']
                         }
                     },
-                    brevity: {
+                    density: {
                         title: 'Information Density',
-                        leftLabel: 'Concise',
-                        rightLabel: 'Elaborate',
+                        leftLabel: 'Comprehensive',
+                        rightLabel: 'Minimal',
                         devices: {
-                            left: ['Short sentences', 'Key points only', 'Minimal qualifiers', 'Action-focused', 'Essential information'],
-                            right: ['Extended explanations', 'Context building', 'Multiple qualifiers', 'Background information', 'Comprehensive details']
+                            left: ['Complete explanations', 'Multi-layered information', 'Preemptive answers', 'Assumption clarification'],
+                            right: ['Essential-only content', 'Implied knowledge', 'Progressive disclosure', 'Contextual inference']
                         }
                     },
-                    approach: {
-                        title: 'Communication Style',
-                        leftLabel: 'Blunt',
-                        rightLabel: 'Diplomatic',
+                    instruction: {
+                        title: 'Instruction Approach',
+                        leftLabel: 'Commanding',
+                        rightLabel: 'Suggesting',
                         devices: {
-                            left: ['Imperative mood', 'No hedge words', 'Direct commands', 'Unqualified statements', 'Straightforward language'],
-                            right: ['Conditional mood', 'Hedge words', 'Polite requests', 'Qualified statements', 'Softening language']
+                            left: ['Imperative verbs', 'Step-by-step directives', 'Action-oriented language', 'Anaphora'],
+                            right: ['Optional language', 'Invitation patterns', 'Gentle guidance', 'Conditional suggestions']
                         }
                     },
-                    context: {
-                        title: 'Context Provision',
-                        leftLabel: 'Minimal Context',
-                        rightLabel: 'Rich Context',
+                    assumption: {
+                        title: 'Assumption Level',
+                        leftLabel: 'Presumptive',
+                        rightLabel: 'Explanatory',
                         devices: {
-                            left: ['Jump to point', 'Assume understanding', 'Skip background', 'Focus on action', 'Essential facts only'],
-                            right: ['Build up to point', 'Explain background', 'Provide setup', 'Paint full picture', 'Comprehensive framing']
+                            left: ['Domain expertise assumptions', 'Interface familiarity', 'Process knowledge', 'Cultural references'],
+                            right: ['Contextual background', 'Progressive education', 'Alternative pathways', 'Inclusive explanations']
                         }
                     }
                 }
@@ -1098,40 +2486,40 @@
                 leftLabel: 'Warm',
                 rightLabel: 'Cool',
                 dimensions: {
-                    personality: {
-                        title: 'Personal Connection',
-                        leftLabel: 'Personal',
-                        rightLabel: 'Impersonal',
-                        devices: {
-                            left: ['First/second person', 'Personal anecdotes', 'Shared experiences', 'Emotional language', 'Individual focus'],
-                            right: ['Third person', 'General examples', 'Universal principles', 'Neutral language', 'Systematic focus']
-                        }
-                    },
-                    emotion: {
-                        title: 'Emotional Engagement',
-                        leftLabel: 'Empathetic',
+                    emotional: {
+                        title: 'Emotional Vocabulary',
+                        leftLabel: 'Feeling-based',
                         rightLabel: 'Neutral',
                         devices: {
-                            left: ['Emotional words', 'Understanding phrases', 'Supportive language', 'Caring tone', 'Human concerns'],
-                            right: ['Factual language', 'Objective phrases', 'Informational tone', 'Clinical approach', 'Systematic concerns']
+                            left: ['Emotion acknowledgment', 'Empathetic language', 'Celebratory expressions', 'Comfort language'],
+                            right: ['Clinical terminology', 'Factual reporting', 'Procedural language', 'Objective descriptions']
                         }
                     },
-                    interaction: {
-                        title: 'Engagement Style',
-                        leftLabel: 'Conversational',
-                        rightLabel: 'Informational',
+                    relational: {
+                        title: 'Relational Positioning',
+                        leftLabel: 'Inclusive',
+                        rightLabel: 'Transactional',
                         devices: {
-                            left: ['Questions to reader', 'Conversational markers', 'Interactive elements', 'Dialogue style', 'Back-and-forth feel'],
-                            right: ['Declarative statements', 'Formal markers', 'One-way communication', 'Lecture style', 'Broadcast feel']
+                            left: ['Partnership language', 'Community references', 'Collective pronouns', 'Shared experience framing'],
+                            right: ['Service provider positioning', 'Customer-vendor language', 'Institutional voice', 'Functional relationship']
+                        }
+                    },
+                    empathy: {
+                        title: 'Empathy Expression',
+                        leftLabel: 'Supportive',
+                        rightLabel: 'Detached',
+                        devices: {
+                            left: ['Struggle recognition', 'Validation language', 'Encouraging affirmations', 'Problem-solving partnership'],
+                            right: ['Objective problem-solving', 'Solution-focused communication', 'Professional boundaries', 'Functional focus']
                         }
                     },
                     support: {
-                        title: 'Supportive Elements',
+                        title: 'Supportive Framing',
                         leftLabel: 'Encouraging',
-                        rightLabel: 'Matter-of-fact',
+                        rightLabel: 'Neutral',
                         devices: {
-                            left: ['Positive reinforcement', 'Reassuring language', 'Motivational phrases', 'Success-focused', 'Confidence building'],
-                            right: ['Neutral statements', 'Factual information', 'Objective descriptions', 'Process-focused', 'Information delivery']
+                            left: ['Achievement celebration', 'Progress acknowledgment', 'Confidence building', 'Future-focused optimism'],
+                            right: ['Status reporting', 'Objective feedback', 'Matter-of-fact delivery', 'Balanced perspectives']
                         }
                     }
                 }
@@ -1142,46 +2530,46 @@
                 rightLabel: 'Humble',
                 dimensions: {
                     certainty: {
-                        title: 'Assertion Level',
-                        leftLabel: 'Assertive',
-                        rightLabel: 'Tentative',
+                        title: 'Certainty Language',
+                        leftLabel: 'Definitive',
+                        rightLabel: 'Qualified',
                         devices: {
-                            left: ['Strong modal verbs (will, must)', 'Definitive statements', 'Bold claims', 'Absolute terms', 'Unqualified assertions'],
-                            right: ['Weak modal verbs (might, could)', 'Tentative statements', 'Cautious claims', 'Qualified terms', 'Hedged assertions']
+                            left: ['Absolute statements', 'Unhedged assertions', 'Guarantee language', 'Superlative expressions'],
+                            right: ['Conditional statements', 'Hedged language', 'Probability expressions', 'Modest positioning']
                         }
                     },
-                    knowledge: {
-                        title: 'Expertise Display',
-                        leftLabel: 'Authoritative',
+                    authority: {
+                        title: 'Authority Stance',
+                        leftLabel: 'Expert',
                         rightLabel: 'Collaborative',
                         devices: {
-                            left: ['Expert language', 'Declarative mood', 'Teaching tone', 'Knowledge assumptions', 'Instructional approach'],
-                            right: ['Learning language', 'Questioning mood', 'Exploring tone', 'Curiosity expressions', 'Discovery approach']
+                            left: ['Directive guidance', 'Authoritative positioning', 'Expert knowledge display', 'Confident recommendations'],
+                            right: ['Learning-together approach', 'User agency emphasis', 'Collaborative language', 'Question-based guidance']
                         }
                     },
-                    presentation: {
-                        title: 'Self-Presentation',
+                    fallibility: {
+                        title: 'Fallibility Acknowledgment',
+                        leftLabel: 'Error-resistant',
+                        rightLabel: 'Transparent',
+                        devices: {
+                            left: ['Seamless experience promises', 'Problem-free positioning', 'System reliability emphasis', 'Confidence in solutions'],
+                            right: ['Limitation acknowledgment', 'Work-in-progress transparency', 'Error possibility mention', 'Learning from mistakes']
+                        }
+                    },
+                    structural: {
+                        title: 'Structural Approach',
                         leftLabel: 'Bold',
-                        rightLabel: 'Understated',
+                        rightLabel: 'Conventional',
                         devices: {
-                            left: ['Strong intensifiers', 'Superlatives', 'Emphatic punctuation', 'Powerful adjectives', 'Commanding verbs'],
-                            right: ['Minimal intensifiers', 'Moderate language', 'Subtle punctuation', 'Gentle adjectives', 'Suggestive verbs']
-                        }
-                    },
-                    qualification: {
-                        title: 'Qualification Level',
-                        leftLabel: 'Unqualified',
-                        rightLabel: 'Heavily Qualified',
-                        devices: {
-                            left: ['Absolute statements', 'No disclaimers', 'Direct claims', 'Unhedged assertions', 'Definitive language'],
-                            right: ['Conditional statements', 'Multiple disclaimers', 'Cautious claims', 'Hedged assertions', 'Tentative language']
+                            left: ['Unconventional organization', 'Risk-taking presentation', 'Innovation emphasis', 'Disruptive patterns'],
+                            right: ['Standard layouts', 'Familiar patterns', 'Safe design choices', 'Industry-standard approaches']
                         }
                     }
                 }
             }
         };
 
-        let currentSpectrum = 'playful-serious';
+        let currentSpectrum = 'casual-formal';
         let sliderValue = 50;
 
         function createDeviceElement(device, isActive) {
@@ -1427,7 +2815,7 @@
             const activeDevices = getAllActiveDevicesWithCategories();
             const antiPatterns = getAntiPatterns();
 
-            const standard = `# Tone of Voice Content Standard v2.0
+            const standard = `# Tone of voice standards for *Spectrum: ${data.title} | Position: ${sliderValue}/100 | Configuration: ${toneName}*
 
 ## 1. Metadata
 \`\`\`yaml
@@ -1437,10 +2825,11 @@ spectrum: ${currentSpectrum}
 position: ${sliderValue}
 level: ${level}
 owner: ${owner}
-version: 2.0
+version: 3.0
 created: ${currentDate}
 last_updated: ${currentDate}
 related_standards: []
+# 🍉 Free Palestine 🍉
 \`\`\`
 
 ---
@@ -1610,7 +2999,11 @@ content_rules:
 ---
 
 *Generated on ${currentDate} using Tone of Voice Engine*
-*Spectrum: ${data.title} | Position: ${sliderValue}/100 | Configuration: ${toneName}*`;
+*Spectrum: ${data.title} | Position: ${sliderValue}/100 | Configuration: ${toneName}*
+
+---
+
+<sub>🍉 Free Palestine</sub>`;
 
             document.getElementById('standard-output').textContent = standard;
             document.getElementById('generated-standard').style.display = 'block';
@@ -1997,10 +3390,10 @@ How it's fixed: Applied clear, straightforward language without excessive inform
         }
 
         function getSchemaContent() {
-            return `# Tone of Voice Content Standard Schema v2.0
+            return `# Tone of Voice Content Standard Schema v3.0
 
 ## Purpose
-This schema defines the structure for tone-of-voice content standards generated by the Tone Engine tool. Version 2.0 introduces granular sub-dimension tracking and eliminates redundancy while adding specificity.
+This schema defines the structure for tone-of-voice content standards generated by the Tone Engine tool. Version 3.0 introduces comprehensive spectrum restructuring, 160+ device library, and refined sub-dimension tracking.
 
 ---
 
@@ -2012,7 +3405,7 @@ spectrum: [SPECTRUM_NAME]             # e.g., playful-serious, casual-formal
 position: [0-100]                     # Numerical position on spectrum (e.g., 76)
 level: [SCOPE_LEVEL]                  # Global, Product, Team, Feature
 owner: [OWNER_TEAM]                   # Team responsible for standard
-version: 2.0                          # Schema version (always 2.0 for this format)
+version: 3.0                          # Schema version (always 3.0 for this format)
 created: [YYYY-MM-DD]                 # Creation date
 last_updated: [YYYY-MM-DD]            # Last modification
 related_standards: []                 # Array of related standard IDs
@@ -2231,6 +3624,9 @@ content_rules:
 
         // Initial display
         updateDisplay();
+
+        // Easter egg
+        console.log('%c🍉 Free Palestine 🍉', 'font-size: 16px; font-weight: bold; color: #00A651;');
     </script>
 </body>
 </html>

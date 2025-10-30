@@ -13,3 +13,13 @@ npm-debug.log*
 # Environment variables
 .env
 .env.local
+
+# Documentation and reference files
+complete_device_reference.md
+complete_device_reference_revised.md
+DEPLOYMENT.md
+subdimension_updates.md
+Tone_standard_v2_example.md
+Tone_standard.md
+video_script.md
+walkthrough.html
