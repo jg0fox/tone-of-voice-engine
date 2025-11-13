@@ -9,11 +9,24 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #ffffff;
-            line-height: 1.6;
+            transition: margin-right 0.3s ease;
+        }
+
+        .main-content.panel-open {
+            margin-right: 400px;
         }
 
         .header {
@@ -202,15 +215,23 @@
         
         .device-item {
             background: #fafafa;
-            padding: 12px 16px;
+            padding: 0;
             margin-bottom: 8px;
-            border-radius: 0%;
+            border-radius: 4px;
             font-size: 14px;
             color: #1a1a1a;
             border: 1px solid #e0e0e0;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 12px 16px;
         }
 
         .device-item:hover {
@@ -223,12 +244,13 @@
             background: #f5f5f5 !important;
             border-color: #666 !important;
         }
-        
+
         .device-expand-icon {
-            float: right;
             font-size: 12px;
             color: #5a5a5a;
             transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
         .device-expanded .device-expand-icon {
@@ -236,24 +258,32 @@
         }
 
         .device-details {
-            margin-top: 12px;
             padding: 16px;
             background: #ffffff;
-            border-radius: 0%;
-            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            border-top: 1px solid #e0e0e0;
             display: none;
         }
-        
+
         .device-details.show {
             display: block;
             animation: fadeIn 0.3s ease;
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
+        .device-name-heading {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #8b4513;
+        }
+
         .device-definition {
             font-weight: 500;
             color: #1a1a1a;
@@ -628,9 +658,254 @@
             background: #3a3a3a;
             transform: translateY(-1px);
         }
+
+        /* Live Example Panel */
+        .example-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 400px;
+            background: #fff;
+            border-left: 2px solid #d0d0d0;
+            box-shadow: -4px 0 16px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .example-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-toggle {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            padding: 20px 8px;
+            cursor: pointer;
+            z-index: 999;
+            border-radius: 8px 0 0 8px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transition: all 0.3s ease;
+        }
+
+        .panel-toggle:hover {
+            background: #2a2a2a;
+            padding-right: 12px;
+        }
+
+        .panel-toggle.panel-open {
+            right: 400px;
+        }
+
+        .panel-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 2px solid #d0d0d0;
+            flex-shrink: 0;
+        }
+
+        .panel-header h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .panel-header p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .example-screen {
+            background: #fff;
+            border-radius: 20px;
+            border: 8px solid #1a1a1a;
+            max-width: 320px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        }
+
+        .example-screen::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: #1a1a1a;
+            border-radius: 0 0 8px 8px;
+            z-index: 10;
+        }
+
+        .screen-label {
+            background: #f8f9fa;
+            padding: 16px 16px 10px;
+            text-align: center;
+            margin-top: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .screen-label-text {
+            font-size: 10px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .screen-body {
+            padding: 24px 20px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen-body h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+        }
+
+        .screen-body p {
+            color: #666;
+            margin: 0 0 20px 0;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .screen-body .subtitle {
+            color: #6c757d;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .example-btn {
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .example-btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .example-btn-secondary {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1.5px solid #e9ecef;
+        }
+
+        .example-btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .example-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 14px;
+            margin: 12px 0;
+        }
+
+        .example-card h4 {
+            margin: 0 0 6px 0;
+            color: #495057;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .example-card p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .example-notification {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .example-notification-urgent {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #721c24;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .notification-body {
+            color: #721c24;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .mt-auto-screen {
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        @media (max-width: 1200px) {
+            .example-panel {
+                width: 100%;
+                transform: translateX(100%);
+            }
+
+            .example-panel.open {
+                transform: translateX(0);
+            }
+
+            .panel-toggle.panel-open {
+                right: 0;
+                display: none;
+            }
+
+            .main-content.panel-open {
+                margin-right: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="main-content" id="main-content">
     <div class="header">
         <h1>Tone spectrum explorer</h1>
         <p>Define your position on the tone spectrum, then generate a standards document.</p>
@@ -1011,6 +1286,25 @@
                     '"Silken, sullen, uncertain" - soft sounds create calm, dreamy mood'
                 ],
                 impact: 'Helps condense complex concepts efficiently. Makes content more memorable and can influence emotional response through sound association.'
+            },
+            'Expressive punctuation': {
+                definition: 'Strategic use of exclamation points, em dashes, and ellipses to add energy and personality.',
+                examples: [
+                    'Single exclamation for genuine enthusiasm: "You did it!"',
+                    'Em dash for emphasis: "Your home search—organized"',
+                    'Ellipses for continuation: "Finding the perfect home..."'
+                ],
+                impact: 'Adds personality and emotional energy when used sparingly, but overuse (multiple exclamation points, excessive ellipses) feels unprofessional and can overwhelm users. Best limited to 0-2 instances per screen.',
+                antiPatterns: ['Multiple exclamation points!!!', 'Excessive ellipses...  ... ...', 'Mixing too many types in one sentence!—really...']
+            },
+            'Neutral punctuation': {
+                definition: 'Standard punctuation without emotional embellishment, using periods, commas, and colons.',
+                examples: [
+                    '"Task completed successfully."',
+                    '"Review the following items: settings, preferences, notifications."',
+                    '"Your account has been created. You may now proceed."'
+                ],
+                impact: 'Maintains professional tone and ensures clarity, but may lack warmth or emotional resonance in contexts where personality is valued.'
             },
             'Smooth transitions': {
                 definition: 'Seamless flow between sentences and ideas using connecting words and phrases.',
@@ -1554,6 +1848,16 @@
                 ],
                 impact: 'Creates memorable brand moments and positive emotional associations but requires careful execution.'
             },
+            'Contextual emoji use': {
+                definition: 'Strategic use of emojis to add personality and visual interest when they genuinely enhance meaning.',
+                examples: [
+                    'Celebration context: "First home saved 🎉"',
+                    'Directional cues: "Next steps 👉"',
+                    'Status indicators: "Task complete ✓"'
+                ],
+                impact: 'Adds warmth and personality when used sparingly, but overuse feels unprofessional and can overwhelm users. Best limited to 0-1 emojis per screen.',
+                antiPatterns: ['Multiple emojis in one phrase 🎉🎊✨', 'Emojis that don\'t match context', 'Using emojis as substitutes for clear copy']
+            },
             'Technical precision': {
                 definition: 'Exact, accurate terminology that prioritizes clarity over creativity.',
                 examples: [
@@ -1589,6 +1893,15 @@
                     'Prioritizing comprehension over musical quality'
                 ],
                 impact: 'Ensures focus remains on content and function rather than form.'
+            },
+            'No visual embellishment': {
+                definition: 'Avoiding emojis, decorative characters, and visual symbols in favor of plain text.',
+                examples: [
+                    '"Task complete" instead of "Task complete ✓"',
+                    '"Error occurred" instead of "⚠️ Error occurred"',
+                    '"Welcome" instead of "Welcome 👋"'
+                ],
+                impact: 'Maintains professional tone and ensures maximum accessibility, but may feel cold or impersonal in casual contexts.'
             },
 
             // Rhythmic Quality
@@ -2373,8 +2686,8 @@
                         leftLabel: 'Imaginative',
                         rightLabel: 'Literal',
                         devices: {
-                            left: ['Metaphorical language', 'Wordplay', 'Anthropomorphism', 'Euphony'],
-                            right: ['Technical precision', 'Functional descriptions', 'Standard terminology', 'Cacophony avoidance']
+                            left: ['Metaphorical language', 'Wordplay', 'Anthropomorphism', 'Euphony', 'Contextual emoji use'],
+                            right: ['Technical precision', 'Functional descriptions', 'Standard terminology', 'Cacophony avoidance', 'No visual embellishment']
                         }
                     },
                     rhythm: {
@@ -2382,8 +2695,8 @@
                         leftLabel: 'Varied',
                         rightLabel: 'Consistent',
                         devices: {
-                            left: ['Dynamic sentence length', 'Alliteration', 'Tempo variation', 'Assonance'],
-                            right: ['Uniform sentence structure', 'Steady rhythm', 'Measured tempo', 'Consonance']
+                            left: ['Dynamic sentence length', 'Alliteration', 'Tempo variation', 'Assonance', 'Expressive punctuation'],
+                            right: ['Uniform sentence structure', 'Steady rhythm', 'Measured tempo', 'Consonance', 'Neutral punctuation']
                         }
                     },
                     structure: {
@@ -2586,32 +2899,36 @@
         function createDeviceElement(device, isActive) {
             const deviceElement = document.createElement('li');
             deviceElement.className = `device-item ${isActive ? 'active' : ''}`;
-            
+
+            const deviceHeader = document.createElement('div');
+            deviceHeader.className = 'device-header';
+
             const deviceName = document.createElement('span');
             deviceName.textContent = device;
-            
+
             const expandIcon = document.createElement('span');
             expandIcon.className = 'device-expand-icon';
             expandIcon.textContent = '▼';
-            
-            deviceElement.appendChild(deviceName);
-            deviceElement.appendChild(expandIcon);
-            
+
+            deviceHeader.appendChild(deviceName);
+            deviceHeader.appendChild(expandIcon);
+            deviceElement.appendChild(deviceHeader);
+
             // Create expandable content
             const deviceDetails = document.createElement('div');
             deviceDetails.className = 'device-details';
-            
+
             if (deviceDefinitions[device]) {
                 const def = deviceDefinitions[device];
-                
+
                 deviceDetails.innerHTML = `
                     <div class="device-definition">${def.definition}</div>
-                    
+
                     <div class="device-examples">
                         <h5>Examples:</h5>
                         ${def.examples.map(example => `<div class="example-item">${example}</div>`).join('')}
                     </div>
-                    
+
                     <div class="device-impact">
                         <h5>UX Impact:</h5>
                         <p>${def.impact}</p>
@@ -2630,7 +2947,7 @@
                     </div>
                 `;
             }
-            
+
             deviceElement.appendChild(deviceDetails);
             
             // Add click handler for expansion
@@ -3638,6 +3955,860 @@ content_rules:
 
         // Easter egg
         console.log('%c🍉 Free Palestine 🍉', 'font-size: 16px; font-weight: bold; color: #00A651;');
+    </script>
+    </div>
+
+    <!-- Panel Toggle Button -->
+    <button class="panel-toggle" id="panel-toggle">Tone example</button>
+
+    <!-- Example Panel -->
+    <div class="example-panel" id="example-panel">
+        <div class="panel-content">
+            <div class="example-screen">
+                <div class="screen-label">
+                    <div class="screen-label-text" id="screen-state-label">ERROR STATE</div>
+                </div>
+                <div class="screen-body" id="example-screen-content">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Panel toggle functionality
+        const panelToggle = document.getElementById('panel-toggle');
+        const examplePanel = document.getElementById('example-panel');
+        const mainContent = document.getElementById('main-content');
+
+        panelToggle.addEventListener('click', function() {
+            const isOpen = examplePanel.classList.contains('open');
+
+            if (isOpen) {
+                examplePanel.classList.remove('open');
+                panelToggle.classList.remove('panel-open');
+                mainContent.classList.remove('panel-open');
+                panelToggle.textContent = 'Tone example';
+            } else {
+                examplePanel.classList.add('open');
+                panelToggle.classList.add('panel-open');
+                mainContent.classList.add('panel-open');
+                panelToggle.textContent = 'Close';
+                updateExampleContent();
+            }
+        });
+
+        // Update example content based on current spectrum and slider value
+        function updateExampleContent() {
+            const spectrum = currentSpectrum;
+            const value = parseInt(document.getElementById('main-slider').value);
+
+            const screenContent = document.getElementById('example-screen-content');
+            const screenLabel = document.getElementById('screen-state-label');
+
+            const result = generateExampleContent(spectrum, value);
+
+            screenContent.innerHTML = result.content;
+            screenLabel.textContent = result.label;
+        }
+
+        // Generate example content based on spectrum and value
+        function generateExampleContent(spectrum, value) {
+            // Select appropriate state based on spectrum and value
+            let state = selectAppropriateState(spectrum, value);
+
+            // Generate content for the selected state
+            switch(state) {
+                case 'celebration':
+                    return { content: generateCelebrationState(spectrum, value), label: 'CELEBRATION' };
+                case 'onboarding':
+                    return { content: generateOnboardingState(spectrum, value), label: 'ONBOARDING' };
+                case 'confirmation':
+                    return { content: generateConfirmationState(spectrum, value), label: 'CONFIRMATION' };
+                case 'error':
+                    return { content: generateErrorState(spectrum, value), label: 'ERROR STATE' };
+                case 'urgent':
+                    return { content: generateUrgentNotification(spectrum, value), label: 'URGENT NOTIFICATION' };
+                default:
+                    return { content: generateErrorState(spectrum, value), label: 'ERROR STATE' };
+            }
+        }
+
+        // Select the most appropriate UI state based on spectrum and position
+        function selectAppropriateState(spectrum, value) {
+            // Playful spectrum: Playful = celebration/onboarding, Serious = error
+            if (spectrum === 'playful-serious') {
+                if (value <= 33) return 'celebration';
+                else if (value <= 49) return 'onboarding';
+                else if (value <= 66) return 'confirmation';
+                else return 'error';
+            }
+
+            // Warm spectrum: Warm = celebration/onboarding, Cool = error
+            else if (spectrum === 'warm-cool') {
+                if (value <= 33) return 'celebration';
+                else if (value <= 49) return 'onboarding';
+                else if (value <= 66) return 'confirmation';
+                else return 'error';
+            }
+
+            // Casual spectrum: Casual = onboarding, Formal = confirmation/error
+            else if (spectrum === 'casual-formal') {
+                if (value <= 33) return 'onboarding';
+                else if (value <= 66) return 'confirmation';
+                else return 'error';
+            }
+
+            // Direct spectrum: Direct = urgent, Indirect = confirmation
+            else if (spectrum === 'direct-indirect') {
+                if (value <= 33) return 'urgent';
+                else if (value <= 66) return 'confirmation';
+                else return 'onboarding';
+            }
+
+            // Confident spectrum: Confident = urgent/celebration, Humble = confirmation
+            else if (spectrum === 'confident-humble') {
+                if (value <= 33) return 'celebration';
+                else if (value <= 66) return 'confirmation';
+                else return 'onboarding';
+            }
+
+            return 'error';
+        }
+
+        // Visual emphasis configuration based on tone intensity
+        function getVisualEmphasis(spectrum, value) {
+            const config = {
+                showEmoji: false,
+                maxExclamations: 0
+            };
+
+            // Playful spectrum: emoji only at extreme playful (0-16)
+            if (spectrum === 'playful-serious' && value <= 16) {
+                config.showEmoji = false; // Removed for being too intense
+                config.maxExclamations = 1;
+            } else if (spectrum === 'playful-serious' && value <= 33) {
+                config.maxExclamations = 1;
+            }
+
+            // Warm spectrum: emoji only at extreme warm (0-16)
+            if (spectrum === 'warm-cool' && value <= 16) {
+                config.showEmoji = false; // Removed for being too intense
+                config.maxExclamations = 2;
+            } else if (spectrum === 'warm-cool' && value <= 33) {
+                config.maxExclamations = 1;
+            }
+
+            // Confident spectrum: minimal visual emphasis
+            if (spectrum === 'confident-humble' && value <= 16) {
+                config.maxExclamations = 0;
+            } else if (spectrum === 'confident-humble' && value <= 33) {
+                config.maxExclamations = 0;
+            }
+
+            return config;
+        }
+
+        // Generate celebration state content
+        function generateCelebrationState(spectrum, value) {
+            const content = {};
+            const emphasis = getVisualEmphasis(spectrum, value);
+
+            if (spectrum === 'playful-serious') {
+                if (value <= 16) {
+                    content.title = "And... saved!";
+                    content.message = "Nice! You just saved your first home to Homes. This is the start of something awesome.";
+                    content.subtitle = "Keep the momentum going:";
+                    content.item1 = "Sort homes by neighborhood, vibe, or whatever works";
+                    content.item2 = "Drop notes and star your faves";
+                    content.item3 = "Get the scoop on price drops";
+                    content.item4 = "Loop in your agent";
+                    content.button1 = "Make a collection";
+                    content.button2 = "Find more gems";
+                } else if (value <= 33) {
+                    content.title = "Home saved";
+                    content.message = "Yes! Your first home is in a collection. Ready to make the most of your search?";
+                    content.subtitle = "Here's what you can do next:";
+                    content.item1 = "Create collections by neighborhood";
+                    content.item2 = "Add notes and ratings";
+                    content.item3 = "Track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Create collection";
+                    content.button2 = "Browse more homes";
+                }
+            } else if (spectrum === 'warm-cool') {
+                if (value <= 16) {
+                    content.title = "Congratulations! We're so excited for you! 🎉";
+                    content.message = "You just saved your very first home and we couldn't be happier to celebrate this moment with you!";
+                    content.subtitle = "We're here to support you every step of the way:";
+                    content.item1 = "Create collections to organize your favorites";
+                    content.item2 = "Add personal notes and ratings";
+                    content.item3 = "Get helpful price change alerts";
+                    content.item4 = "Share your journey with your agent";
+                    content.button1 = "Let's create a collection";
+                    content.button2 = "Discover more homes";
+                } else if (value <= 33) {
+                    content.title = "Congratulations! 🎉";
+                    content.message = "You saved your first home to Homes! We're excited to help you on your journey.";
+                    content.subtitle = "Make the most of your home search:";
+                    content.item1 = "Create collections by neighborhood";
+                    content.item2 = "Add notes and ratings";
+                    content.item3 = "Get price change alerts";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Create collection";
+                    content.button2 = "Find more homes";
+                }
+            } else if (spectrum === 'confident-humble') {
+                if (value <= 16) {
+                    content.title = "First home saved. Let's go! 🎉";
+                    content.message = "Perfect start. You're on your way to finding the right home, and we've got the tools to get you there.";
+                    content.subtitle = "Here's what's next:";
+                    content.item1 = "Organize homes into collections";
+                    content.item2 = "Add notes and ratings";
+                    content.item3 = "Track price changes automatically";
+                    content.item4 = "Share lists with your agent";
+                    content.button1 = "Create collection";
+                    content.button2 = "Find more homes";
+                } else if (value <= 33) {
+                    content.title = "Great start! 🎉";
+                    content.message = "You've saved your first home. Here are some ways to make your search even better.";
+                    content.subtitle = "Next steps:";
+                    content.item1 = "Create collections by area";
+                    content.item2 = "Add your notes and ratings";
+                    content.item3 = "Get price change notifications";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Create collection";
+                    content.button2 = "Browse homes";
+                }
+            }
+
+            return `
+                <div class="celebration" style="text-align: center; padding: 28px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px; margin: 16px 0;">
+                    ${emphasis.showEmoji ? '<div style="font-size: 2.5rem; margin-bottom: 12px;">🎉</div>' : ''}
+                    <h2 style="color: white;">${content.title}</h2>
+                    <p style="color: white; margin-bottom: 8px;">${content.message}</p>
+                </div>
+
+                <h3 style="font-size: 16px; margin: 20px 0 12px 0;">${content.subtitle}</h3>
+
+                <ul style="list-style: none; margin: 20px 0; padding: 0;">
+                    <li style="padding: 10px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item1}
+                    </li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item2}
+                    </li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item3}
+                    </li>
+                    <li style="padding: 10px 0; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item4}
+                    </li>
+                </ul>
+
+                <div class="mt-auto-screen">
+                    <button class="example-btn example-btn-primary">${content.button1}</button>
+                    <button class="example-btn example-btn-secondary">${content.button2}</button>
+                </div>
+            `;
+        }
+
+        // Generate onboarding state content
+        function generateOnboardingState(spectrum, value) {
+            const content = {};
+
+            if (spectrum === 'casual-formal') {
+                if (value <= 16) {
+                    content.title = "Welcome home";
+                    content.message = "Get your search started with collections. It's a breeze!";
+                    content.item1 = "Save listings from any site";
+                    content.item2 = "Make custom collections";
+                    content.item3 = "Keep tabs on price changes";
+                    content.item4 = "Loop in your agent";
+                    content.button1 = "Let's go!";
+                    content.button2 = "Make a collection";
+                } else if (value <= 33) {
+                    content.title = "Welcome to Homes";
+                    content.message = "Organize your home search with collections.";
+                    content.item1 = "Save listings from any site";
+                    content.item2 = "Create custom collections";
+                    content.item3 = "Track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Start exploring";
+                    content.button2 = "Create collection";
+                }
+            } else if (spectrum === 'warm-cool') {
+                if (value <= 16) {
+                    content.title = "Welcome to Homes!";
+                    content.message = "We're so glad you're here! Let's organize your home search together with collections.";
+                    content.item1 = "Save any listing you love";
+                    content.item2 = "Create collections that work for you";
+                    content.item3 = "We'll track price changes for you";
+                    content.item4 = "Share your favorites with your agent";
+                    content.button1 = "Let's get started";
+                    content.button2 = "Create your first collection";
+                } else if (value <= 33) {
+                    content.title = "Welcome to Homes";
+                    content.message = "We're here to help you organize your home search with collections.";
+                    content.item1 = "Save listings from any site";
+                    content.item2 = "Create custom collections";
+                    content.item3 = "Track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Start exploring";
+                    content.button2 = "Create collection";
+                }
+            } else if (spectrum === 'playful-serious') {
+                if (value <= 33) {
+                    content.title = "Welcome aboard!";
+                    content.message = "Ready to wrangle your home search? Collections make it a breeze!";
+                    content.item1 = "Snag listings from anywhere";
+                    content.item2 = "Build your dream collections";
+                    content.item3 = "Catch those price drops";
+                    content.item4 = "Bring your agent along";
+                    content.button1 = "Let's do this";
+                    content.button2 = "Start a collection";
+                } else if (value <= 49) {
+                    content.title = "Your home search, organized";
+                    content.message = "Welcome to Homes. Collections help you track everything in one place.";
+                    content.item1 = "Save listings from any site";
+                    content.item2 = "Create custom collections";
+                    content.item3 = "Track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Start exploring";
+                    content.button2 = "Create collection";
+                }
+            } else if (spectrum === 'direct-indirect') {
+                if (value >= 67) {
+                    content.title = "Welcome to Homes";
+                    content.message = "You might enjoy our collections feature for organizing your search.";
+                    content.item1 = "Save listings that interest you";
+                    content.item2 = "Organize homes however you'd like";
+                    content.item3 = "We can notify you of price changes";
+                    content.item4 = "Share collections if you want";
+                    content.button1 = "Explore";
+                    content.button2 = "Try collections";
+                } else {
+                    content.title = "Welcome to Homes";
+                    content.message = "Organize your search with collections.";
+                    content.item1 = "Save listings from any site";
+                    content.item2 = "Create custom collections";
+                    content.item3 = "Track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Start exploring";
+                    content.button2 = "Create collection";
+                }
+            } else if (spectrum === 'confident-humble') {
+                if (value >= 67) {
+                    content.title = "Welcome to Homes";
+                    content.message = "We're still learning, but we hope our collections feature helps organize your search.";
+                    content.item1 = "Save listings (we'll try our best)";
+                    content.item2 = "Create collections";
+                    content.item3 = "We'll attempt to track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Give it a try";
+                    content.button2 = "Create collection";
+                } else {
+                    content.title = "Welcome to Homes";
+                    content.message = "Organize your home search with smart collections.";
+                    content.item1 = "Save listings from any site";
+                    content.item2 = "Create custom collections";
+                    content.item3 = "Track price changes";
+                    content.item4 = "Share with your agent";
+                    content.button1 = "Start exploring";
+                    content.button2 = "Create collection";
+                }
+            }
+
+            return `
+                <h2>${content.title}</h2>
+                <p>${content.message}</p>
+
+                <ul style="list-style: none; margin: 20px 0; padding: 0;">
+                    <li style="padding: 10px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item1}
+                    </li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item2}
+                    </li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #f1f3f4; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item3}
+                    </li>
+                    <li style="padding: 10px 0; display: flex; align-items: flex-start; font-size: 13px;">
+                        <span style="color: #28a745; font-weight: bold; margin-right: 10px; margin-top: 1px;">✓</span>
+                        ${content.item4}
+                    </li>
+                </ul>
+
+                <div class="mt-auto-screen">
+                    <button class="example-btn example-btn-primary">${content.button1}</button>
+                    <button class="example-btn example-btn-secondary">${content.button2}</button>
+                </div>
+            `;
+        }
+
+        // Generate confirmation state content
+        function generateConfirmationState(spectrum, value) {
+            const content = {};
+
+            if (spectrum === 'casual-formal') {
+                if (value <= 49) {
+                    content.title = "Share your collection?";
+                    content.message = "Want to share \"Dream Homes in Austin\" with your agent? They'll see all 12 homes and can drop comments.";
+                    content.canSee = "All listings with your notes<br>Collection name and description";
+                    content.cantSee = "Your other collections<br>Private notes";
+                    content.button1 = "Not now";
+                    content.button2 = "Share it";
+                } else if (value <= 66) {
+                    content.title = "Share collection?";
+                    content.message = "Share \"Dream Homes in Austin\" with your agent? They will see all 12 homes and can add comments.";
+                    content.canSee = "All listings with your notes<br>Collection name and description";
+                    content.cantSee = "Your other collections<br>Private notes";
+                    content.button1 = "Cancel";
+                    content.button2 = "Share";
+                } else {
+                    content.title = "Confirm collection sharing";
+                    content.message = "You are about to share collection \"Dream Homes in Austin\" with your designated agent. The agent will have access to all 12 listings and may add comments.";
+                    content.canSee = "All listings with associated notes<br>Collection name and description";
+                    content.cantSee = "Other collections in your account<br>Notes marked as private";
+                    content.button1 = "Cancel";
+                    content.button2 = "Confirm";
+                }
+            } else if (spectrum === 'direct-indirect') {
+                if (value <= 33) {
+                    content.title = "Share collection with agent?";
+                    content.message = "Your agent gets: 12 homes, your notes, collection name.";
+                    content.canSee = "All listings with notes<br>Collection name";
+                    content.cantSee = "Other collections<br>Private notes";
+                    content.button1 = "Cancel";
+                    content.button2 = "Share";
+                } else if (value <= 66) {
+                    content.title = "Share collection?";
+                    content.message = "This will allow your agent to view \"Dream Homes in Austin\" which includes 12 homes with your notes.";
+                    content.canSee = "Listings with your notes<br>Collection details";
+                    content.cantSee = "Your other collections<br>Notes marked private";
+                    content.button1 = "Cancel";
+                    content.button2 = "Share";
+                } else {
+                    content.title = "Share collection?";
+                    content.message = "If you'd like, you can share \"Dream Homes in Austin\" with your agent. They might find it helpful to see your 12 selected homes.";
+                    content.canSee = "The listings you've chosen<br>Notes you've added to them";
+                    content.cantSee = "Your other collections<br>Any private notes";
+                    content.button1 = "Maybe later";
+                    content.button2 = "Yes, share";
+                }
+            } else if (spectrum === 'playful-serious') {
+                if (value <= 49) {
+                    content.title = "Ready to share?";
+                    content.message = "Loop your agent into \"Dream Homes in Austin\"! They'll see your 12 picks and can chime in with thoughts.";
+                    content.canSee = "Your curated homes + notes<br>Collection name & details";
+                    content.cantSee = "Your other collections<br>Personal notes";
+                    content.button1 = "Not yet";
+                    content.button2 = "Let's share";
+                } else if (value <= 66) {
+                    content.title = "Share collection?";
+                    content.message = "Share \"Dream Homes in Austin\" with your agent? They will see all 12 homes and can provide feedback.";
+                    content.canSee = "All listings with notes<br>Collection information";
+                    content.cantSee = "Other collections<br>Private notes";
+                    content.button1 = "Cancel";
+                    content.button2 = "Share";
+                }
+            } else if (spectrum === 'warm-cool') {
+                if (value <= 49) {
+                    content.title = "Share with your agent?";
+                    content.message = "We'd love to help you share \"Dream Homes in Austin\" with your agent! They'll see all 12 homes you've chosen and can add their thoughts.";
+                    content.canSee = "All the listings you've saved<br>Your notes and the collection name";
+                    content.cantSee = "Your other collections<br>Notes you've marked private";
+                    content.button1 = "Not right now";
+                    content.button2 = "Yes, share";
+                } else if (value <= 66) {
+                    content.title = "Share collection?";
+                    content.message = "Share \"Dream Homes in Austin\" with your agent. They will see 12 homes and can comment.";
+                    content.canSee = "Listings with notes<br>Collection name";
+                    content.cantSee = "Other collections<br>Private notes";
+                    content.button1 = "Cancel";
+                    content.button2 = "Share";
+                }
+            } else if (spectrum === 'confident-humble') {
+                if (value <= 49) {
+                    content.title = "Share collection with agent";
+                    content.message = "Send \"Dream Homes in Austin\" to your agent now. All 12 homes included.";
+                    content.canSee = "All 12 homes with notes<br>Collection details";
+                    content.cantSee = "Other collections<br>Private notes";
+                    content.button1 = "Cancel";
+                    content.button2 = "Share";
+                } else if (value <= 66) {
+                    content.title = "Share collection?";
+                    content.message = "We can share \"Dream Homes in Austin\" with your agent if you think it would be helpful. It includes 12 homes.";
+                    content.canSee = "The homes you've selected<br>Your notes on them";
+                    content.cantSee = "Your other collections<br>Private notes";
+                    content.button1 = "Maybe not";
+                    content.button2 = "Sure";
+                }
+            }
+
+            return `
+                <h2>${content.title}</h2>
+                <p>${content.message}</p>
+
+                <div class="example-card">
+                    <h4>They'll see:</h4>
+                    <p>${content.canSee}</p>
+                </div>
+
+                <div class="example-card">
+                    <h4>They can't see:</h4>
+                    <p>${content.cantSee}</p>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <label style="display: block; font-weight: 500; color: #495057; margin-bottom: 6px; font-size: 13px;">Agent's email</label>
+                    <input type="email" placeholder="agent@realty.com" style="width: 100%; padding: 12px 14px; border: 1.5px solid #e9ecef; border-radius: 12px; font-size: 14px; background: #fff; box-sizing: border-box;">
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button class="example-btn example-btn-secondary" style="flex: 1;">${content.button1}</button>
+                    <button class="example-btn example-btn-primary" style="flex: 1;">${content.button2}</button>
+                </div>
+            `;
+        }
+
+        // Generate urgent notification content
+        function generateUrgentNotification(spectrum, value) {
+            const content = {};
+
+            if (spectrum === 'direct-indirect') {
+                if (value <= 16) {
+                    content.alertTitle = "🔥 Price dropped $15k";
+                    content.alertBody = "Home in \"Top Choices\" just dropped.";
+                    content.title = "Act fast: Price drop";
+                    content.message = "456 Pine Avenue dropped $15k. Homes here sell in 5 days after price drops.";
+                    content.stats = "Avg days on market: 12<br>Price drops sell 40% faster<br>3 others saved this";
+                    content.button1 = "View now";
+                    content.button2 = "Call agent";
+                } else if (value <= 33) {
+                    content.alertTitle = "🔥 Price drop alert";
+                    content.alertBody = "A home in your \"Top Choices\" collection just dropped $15,000.";
+                    content.title = "Time-sensitive opportunity";
+                    content.message = "456 Pine Avenue reduced price. Homes in this area typically sell within 5 days of price drops.";
+                    content.stats = "Avg days on market: 12<br>Price drops sell 40% faster<br>3 others watching this home";
+                    content.button1 = "View details";
+                    content.button2 = "Contact agent";
+                }
+            } else if (spectrum === 'confident-humble') {
+                if (value <= 16) {
+                    content.alertTitle = "🔥 Major price drop";
+                    content.alertBody = "Your top choice dropped $15k. Time to move.";
+                    content.title = "Perfect timing: Act now";
+                    content.message = "456 Pine Avenue dropped to $410k. This won't last—price drops here sell in 5 days.";
+                    content.stats = "Days on market: 12<br>Price drop advantage: 40% faster sale<br>Competition: 3 others watching";
+                    content.button1 = "See it now";
+                    content.button2 = "Contact agent";
+                } else if (value <= 33) {
+                    content.alertTitle = "🔥 Price drop alert";
+                    content.alertBody = "Home in \"Top Choices\" just dropped $15,000.";
+                    content.title = "Time-sensitive opportunity";
+                    content.message = "456 Pine Avenue reduced price. Homes in this area sell within 5 days of price drops.";
+                    content.stats = "Avg days on market: 12<br>Price drops sell 40% faster<br>3 others saved this home";
+                    content.button1 = "View details";
+                    content.button2 = "Contact agent";
+                }
+            }
+
+            // Fallback for other spectrums
+            if (!content.title) {
+                content.alertTitle = "🔥 Price drop alert";
+                content.alertBody = "Home in your \"Top Choices\" just dropped $15,000.";
+                content.title = "Time-sensitive opportunity";
+                content.message = "456 Pine Avenue just reduced price. Homes in this area typically sell within 5 days of price drops.";
+                content.stats = "Avg days on market: 12<br>Price drops sell 40% faster<br>3 others saved this home";
+                content.button1 = "View details";
+                content.button2 = "Contact agent";
+            }
+
+            return `
+                <div class="example-notification example-notification-urgent">
+                    <div class="notification-title">${content.alertTitle}</div>
+                    <div class="notification-body">${content.alertBody}</div>
+                </div>
+
+                <h2>${content.title}</h2>
+                <p>${content.message}</p>
+
+                <div class="example-card">
+                    <h4>📍 456 Pine Avenue</h4>
+                    <p><strong>Was $425k → Now $410k</strong><br>
+                    4 bed, 3 bath • 2,100 sq ft</p>
+                    <p style="font-size: 11px; color: #6c757d; margin-top: 6px;">Updated 23 min ago</p>
+                </div>
+
+                <div class="example-card">
+                    <h4>Area stats:</h4>
+                    <p>${content.stats}</p>
+                </div>
+
+                <div class="mt-auto-screen">
+                    <button class="example-btn example-btn-primary">${content.button1}</button>
+                    <button class="example-btn example-btn-secondary">${content.button2}</button>
+                    <p style="text-align: center; margin: 12px 0 0 0; font-size: 11px; color: #6c757d;">
+                        <a href="#" style="color: #007bff; text-decoration: none;">Adjust alert settings</a>
+                    </p>
+                </div>
+            `;
+        }
+
+        function generateErrorState(spectrum, value) {
+            const content = {};
+
+            // Casual vs Formal
+            if (spectrum === 'casual-formal') {
+                if (value <= 16) {
+                    content.title = "Oops, something went wrong";
+                    content.message = "We couldn't save your home. No worries though—just try again in a sec!";
+                    content.suggestion = "Maybe check your internet connection real quick?";
+                    content.button1 = "Give it another shot";
+                    content.button2 = "Grab the URL";
+                } else if (value <= 33) {
+                    content.title = "Couldn't save that one";
+                    content.message = "We hit a snag trying to save your home. Give it another try?";
+                    content.suggestion = "Check your connection and we'll get this sorted.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 49) {
+                    content.title = "Unable to save home";
+                    content.message = "We couldn't save this listing due to a connection issue.";
+                    content.suggestion = "Please verify your internet connection and try again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy listing URL";
+                } else if (value <= 66) {
+                    content.title = "Save operation failed";
+                    content.message = "The system was unable to save your listing due to a network error.";
+                    content.suggestion = "Please verify your internet connection and attempt the operation again.";
+                    content.button1 = "Retry operation";
+                    content.button2 = "Copy listing URL";
+                } else if (value <= 83) {
+                    content.title = "Operation unsuccessful";
+                    content.message = "The listing could not be saved due to a network connectivity issue.";
+                    content.suggestion = "Please verify your network connection and reattempt the save operation.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                } else {
+                    content.title = "Save operation failed";
+                    content.message = "The system was unable to persist the listing data due to network connectivity failure.";
+                    content.suggestion = "Verify network configuration and reinitiate save operation.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                }
+            }
+
+            // Direct vs Indirect
+            else if (spectrum === 'direct-indirect') {
+                if (value <= 16) {
+                    content.title = "Save failed";
+                    content.message = "Your home wasn't saved. Connection error.";
+                    content.suggestion = "Check internet. Try again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 33) {
+                    content.title = "Unable to save";
+                    content.message = "The home couldn't be saved due to a connection issue.";
+                    content.suggestion = "Check your internet connection and try saving again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 49) {
+                    content.title = "Save unsuccessful";
+                    content.message = "We encountered difficulty saving this listing.";
+                    content.suggestion = "It may help to check your connection before trying again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 66) {
+                    content.title = "Something went wrong";
+                    content.message = "We weren't quite able to save this home—it seems there might be a connection issue.";
+                    content.suggestion = "You might want to check your internet and give it another try when you're ready.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 83) {
+                    content.title = "We hit a snag";
+                    content.message = "This listing may not have saved properly. It could be related to your connection.";
+                    content.suggestion = "Perhaps try checking your internet connection when you have a moment?";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else {
+                    content.title = "A challenge appeared";
+                    content.message = "The save operation encountered what appears to be a connectivity challenge.";
+                    content.suggestion = "You might consider verifying your network status if you'd like to try again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                }
+            }
+
+            // Playful vs Serious
+            else if (spectrum === 'playful-serious') {
+                if (value <= 16) {
+                    content.title = "Whoops! That didn't stick";
+                    content.message = "Looks like your home slipped through our fingers. The internet gremlins must be at it again!";
+                    content.suggestion = "Give your connection a quick check and let's try that again.";
+                    content.button1 = "Let's try again";
+                    content.button2 = "Grab the link";
+                } else if (value <= 33) {
+                    content.title = "Oops, save didn't work";
+                    content.message = "We couldn't save this one—looks like a connection hiccup.";
+                    content.suggestion = "Check your internet and we'll give it another go!";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 49) {
+                    content.title = "Unable to save home";
+                    content.message = "We couldn't save your listing due to a connection issue.";
+                    content.suggestion = "Please check your internet connection and try again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 66) {
+                    content.title = "Save operation failed";
+                    content.message = "The listing could not be saved due to a network error.";
+                    content.suggestion = "Verify your internet connection and retry the operation.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                } else if (value <= 83) {
+                    content.title = "Operation unsuccessful";
+                    content.message = "System was unable to complete the save operation due to network failure.";
+                    content.suggestion = "Verify network connectivity and reattempt operation.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                } else {
+                    content.title = "Save failed";
+                    content.message = "Listing data persistence failed due to network connectivity error.";
+                    content.suggestion = "Verify network configuration. Retry operation.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                }
+            }
+
+            // Warm vs Cool
+            else if (spectrum === 'warm-cool') {
+                if (value <= 16) {
+                    content.title = "We're so sorry!";
+                    content.message = "Oh no—we couldn't save your home and we know how frustrating that must be!";
+                    content.suggestion = "We're here to help! Try checking your connection and we'll work through this together.";
+                    content.button1 = "Let's try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 33) {
+                    content.title = "Sorry, that didn't work";
+                    content.message = "We weren't able to save this home due to a connection issue.";
+                    content.suggestion = "No worries—just check your internet and give it another try!";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 49) {
+                    content.title = "Unable to save";
+                    content.message = "We couldn't save this listing due to a connection issue.";
+                    content.suggestion = "Please check your internet connection and try again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 66) {
+                    content.title = "Save failed";
+                    content.message = "The listing was not saved due to a network error.";
+                    content.suggestion = "Check your internet connection and retry.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                } else if (value <= 83) {
+                    content.title = "Operation failed";
+                    content.message = "Save operation unsuccessful. Network error detected.";
+                    content.suggestion = "Verify connection. Retry operation.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy URL";
+                } else {
+                    content.title = "Error";
+                    content.message = "Save failed. Network connectivity error.";
+                    content.suggestion = "Check connection. Retry.";
+                    content.button1 = "Retry";
+                    content.button2 = "Copy";
+                }
+            }
+
+            // Confident vs Humble
+            else if (spectrum === 'confident-humble') {
+                if (value <= 16) {
+                    content.title = "Save failed—we've got this";
+                    content.message = "Your home wasn't saved, but this is a quick fix. Just a connection blip.";
+                    content.suggestion = "Check your internet and tap retry. Problem solved.";
+                    content.button1 = "Retry now";
+                    content.button2 = "Copy URL";
+                } else if (value <= 33) {
+                    content.title = "Unable to save";
+                    content.message = "We couldn't save this home due to a connection issue.";
+                    content.suggestion = "Try checking your internet connection and save again.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 49) {
+                    content.title = "Save didn't work";
+                    content.message = "This listing couldn't be saved—it seems like a connection issue.";
+                    content.suggestion = "You might want to check your internet and give it another try.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 66) {
+                    content.title = "We couldn't save this";
+                    content.message = "This home didn't save, possibly due to a connection issue on our end or yours.";
+                    content.suggestion = "If you'd like, you can check your connection and we can try again together.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else if (value <= 83) {
+                    content.title = "This might not have worked";
+                    content.message = "We're not certain, but this listing may not have saved—possibly a connection issue.";
+                    content.suggestion = "You might want to check your connection if you'd like to try again. We're still learning!";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                } else {
+                    content.title = "Something may have gone wrong";
+                    content.message = "We're not entirely sure, but the save operation might have encountered an issue—possibly network-related.";
+                    content.suggestion = "We're still working on improving this. You could try checking your connection if you'd like.";
+                    content.button1 = "Try again";
+                    content.button2 = "Copy URL";
+                }
+            }
+
+            return `
+                <div style="text-align: center; padding: 32px 0;">
+                    <div style="width: 50px; height: 50px; background: #dc3545; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: white; font-size: 20px;">!</div>
+                    <h2>${content.title}</h2>
+                    <p>${content.message}</p>
+                </div>
+
+                <div class="example-card">
+                    <h4>Try this:</h4>
+                    <p>${content.suggestion}</p>
+                </div>
+
+                <p class="text-small" style="text-align: center; color: #6c757d; margin: 20px 0; font-size: 11px;">Error CONN_001</p>
+
+                <div class="mt-auto-screen">
+                    <button class="example-btn example-btn-primary">${content.button1}</button>
+                    <button class="example-btn example-btn-secondary">${content.button2}</button>
+                </div>
+            `;
+        }
+
+        // Update example when slider changes
+        document.getElementById('main-slider').addEventListener('input', function() {
+            if (examplePanel.classList.contains('open')) {
+                updateExampleContent();
+            }
+        });
+
+        // Update example when spectrum changes
+        document.querySelectorAll('.spectrum-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                setTimeout(() => {
+                    if (examplePanel.classList.contains('open')) {
+                        updateExampleContent();
+                    }
+                }, 100);
+            });
+        });
     </script>
 </body>
 </html>
